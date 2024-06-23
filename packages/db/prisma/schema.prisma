@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -19,6 +13,38 @@ model User {
   userName        String
   email           String    @unique
   hashedPassword  String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  auctions        Auction[]
+  bids            Bid[]
+}
+
+model Auction {
+  id            Int       @id @default(autoincrement())
+  title         String
+  description   String
+  startingPrice Float
+  currentPrice  Float
+  startDate     DateTime
+  endDate       DateTime
+  status        AuctionStatus
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  bids          Bid[]
+  image         String
+  categories    Categories
+}
+
+model Bid {
+  id        Int      @id @default(autoincrement())
+  amount    Float
+  createdAt DateTime @default(now())
+  userId    String
+  auctionId Int
+  user      User     @relation(fields: [userId], references: [id])
+  auction   Auction  @relation(fields: [auctionId], references: [id])
 }
 
 model Session {
@@ -26,4 +52,23 @@ model Session {
   expiresAt DateTime
   userId    String
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
+
+enum Categories {
+  ART
+  COLLECTIBLES
+  ELECTRONICS
+  VECHICLES
+  WATCHES
+  FASHION
+  SHOES
+
+
+
+}
+
+enum AuctionStatus {
+  ACTIVE
+  ENDED
+  CANCELLED
 }
