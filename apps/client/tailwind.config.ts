@@ -1,5 +1,11 @@
 import type { Config } from "tailwindcss"
-
+import { withUt } from "uploadthing/tw";
+ 
+export const withUt({
+  // Your existing Tailwind config
+  content: ["./src/**/*.{ts,tsx,mdx}"],
+  ...
+});
 const config = {
   darkMode: ["class"],
   content: [
