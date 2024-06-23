@@ -9,9 +9,7 @@ const wss = new WebSocketServer({ server: httpServer });
 wss.on("connection", function connection(ws) {
   ws.on("error", console.error);
 
-  ws.on("message", function message(data, isBinary) {
-    wss.clients.forEach(function each(client) {});
+  ws.on("close", () => {
+    console.log("client disconnected");
   });
-
-  ws.send("Hello! Message From Server!!");
 });
