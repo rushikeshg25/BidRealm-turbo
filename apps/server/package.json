@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node dist/index.js",
+    "dev": "tsup --watch --onSuccess \"node dist/index.js\"",
+    "build": "tsup",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/"
   },
   "keywords": [],
   "author": "",
@@ -11,7 +16,10 @@
   "description": "",
   "dependencies": {
     "express": "^4.19.2",
-    "ws": "^8.17.1"
+    "ws": "^8.17.1",
+    "@repo/typescript-config": "*",
+    "@repo/env": "*",
+    "@repo/db": "*"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
