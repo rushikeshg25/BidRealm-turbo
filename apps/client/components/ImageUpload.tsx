@@ -3,34 +3,42 @@
 import { OurFileRouter } from "@/app/api/uploadthing/core";
 import { UploadDropzone } from "@uploadthing/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import toast from "react-hot-toast";
+import { X } from "lucide-react";
 
 export default function ImageUpload() {
   const [imgUrl, setImgUrl] = useState<string>("");
-  useEffect(() => {
-    console.log(imgUrl);
-  }, [imgUrl]);
   return (
-    <div className='w-fit'>
+    <div className='w-fit p-2'>
       {imgUrl.length > 0 ? (
-        <Image alt='Uploaded image' src={imgUrl} width={300} height={300} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <div className='relative'>
+            <X
+              className='absolute  -top-2 -right-2 cursor-pointer z-10  dark:bg-black bg-white font-bold dark:text-white size-6 rounded-full dark:border-white border-black border-2'
+              onClick={() => setImgUrl("")}
+            />
+            <Image
+              alt='Uploaded image'
+              src={imgUrl}
+              width={300}
+              height={300}
+            ></Image>
+          </div>
+        </Suspense>
       ) : (
         <UploadDropzone<OurFileRouter, "imageUploader">
-          //   appearance={}
+          className='dark:text-white'
           endpoint='imageUploader'
           onClientUploadComplete={(res) => {
             setImgUrl(res[0]?.url as string);
+            toast.success("Image uploaded!");
           }}
           onUploadError={(error: Error) => {
             toast.error("Error uploading image! Try again.");
           }}
         />
       )}
-      {/* {imgUrl.length > 0 && (
-        <Image alt='Uploaded image' src={imgUrl} width={150} height={150} />
-      )} */}
-      {/* )} */}
     </div>
   );
 }
