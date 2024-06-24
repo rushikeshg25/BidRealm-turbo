@@ -16,7 +16,9 @@ export const ourFileRouter = {
 
       // If you throw, the user will not be able to upload
       if (!user) throw new UploadThingError("Unauthorized");
-
+      strictImageAttachment: f({
+        image: { maxFileSize: "4MB", maxFileCount: 1, minFileCount: 1 },
+      });
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
       return { userId: user.id };
     })
