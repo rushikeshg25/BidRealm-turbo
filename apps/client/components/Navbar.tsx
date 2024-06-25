@@ -87,8 +87,8 @@ const Navbar = ({
                 <DropdownMenuItem onClick={() => router.push("/my-auctions")}>
                   My Auctions
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => router.push("/my-biddings")}>
-                  Biddings
+                <DropdownMenuItem onClick={() => router.push("/my-bids")}>
+                  Bids
                 </DropdownMenuItem>
 
                 <DropdownMenuItem onClick={LogoutHandler}>
