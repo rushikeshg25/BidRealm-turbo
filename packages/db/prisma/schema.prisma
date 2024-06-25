@@ -10,7 +10,7 @@ datasource db {
 model User {
   id              String    @id
   sessions        Session[]
-  userName        String
+  userName        String    @unique
   email           String    @unique
   hashedPassword  String
   createdAt       DateTime  @default(now())
