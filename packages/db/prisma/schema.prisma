@@ -20,7 +20,7 @@ model User {
 }
 
 model Auction {
-  id            Int       @id @default(autoincrement())
+  id            String       @id @default(cuid())
   title         String
   description   String
   startingPrice Float
@@ -38,11 +38,11 @@ model Auction {
 }
 
 model Bid {
-  id        Int      @id @default(autoincrement())
+  id        String      @id @default(cuid())
   amount    Float
   createdAt DateTime @default(now())
   userId    String
-  auctionId Int
+  auctionId String
   user      User     @relation(fields: [userId], references: [id])
   auction   Auction  @relation(fields: [auctionId], references: [id])
 }
@@ -68,6 +68,7 @@ enum Categories {
 }
 
 enum AuctionStatus {
+  INACTIVE
   ACTIVE
   ENDED
   CANCELLED
