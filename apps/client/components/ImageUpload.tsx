@@ -10,7 +10,7 @@ import { X } from "lucide-react";
 export default function ImageUpload() {
   const [imgUrl, setImgUrl] = useState<string>("");
   return (
-    <div className='w-fit p-2'>
+    <div className='w-fit '>
       {imgUrl.length > 0 ? (
         <Suspense fallback={<div>Loading...</div>}>
           <div className='relative'>
@@ -28,7 +28,8 @@ export default function ImageUpload() {
         </Suspense>
       ) : (
         <UploadDropzone<OurFileRouter, "imageUploader">
-          className='dark:text-white'
+          className='dark:text-white   ut-label:text-white dark:border-dashed dark:border-border ut-button:dark:bg-primary ut-button:dark:text-black ut-button:hover:cursor-pointer
+'
           endpoint='imageUploader'
           onClientUploadComplete={(res) => {
             setImgUrl(res[0]?.url as string);

@@ -1,9 +1,6 @@
-import ImageUpload from "@/components/ImageUpload";
+import prisma from "@repo/db";
 
-export default function Home() {
-  return (
-    <div>
-      <ImageUpload />
-    </div>
-  );
+export default async function Home() {
+  const user = await prisma.bid.findMany();
+  return <div>{JSON.stringify(user)}</div>;
 }

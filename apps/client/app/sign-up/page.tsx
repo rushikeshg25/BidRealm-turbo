@@ -1,4 +1,4 @@
-"use client";
+"use client"; //Rushikehs
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,7 +20,7 @@ const SignUp = () => {
     formData.append("email", data.email);
     formData.append("password", data.password);
     formData.append("confirmPassword", data.confirmPassword);
-
+    console.log(formData.get("userName"));
     try {
       const response = await fetch("/api/signup", {
         method: "POST",
@@ -49,7 +49,7 @@ const SignUp = () => {
             Create your account to get started.
           </p>
         </div>
-        <form className='space-y-4'>
+        <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
           <div>
             <Label htmlFor='username' className='text-muted-foreground'>
               Username
@@ -59,7 +59,13 @@ const SignUp = () => {
               type='text'
               placeholder='Enter your username'
               className='w-full px-4 py-2 bg-muted dark:bg-card dark:text-primary-foreground rounded-md'
+              {...form.register("userName")}
             />
+            {form.formState.errors.userName && (
+              <p className='text-red-500'>
+                {form.formState.errors.userName.message}
+              </p>
+            )}
           </div>
           <div>
             <Label htmlFor='email' className='text-muted-foreground'>
@@ -70,7 +76,13 @@ const SignUp = () => {
               type='email'
               placeholder='Enter your email'
               className='w-full px-4 py-2 bg-muted dark:bg-card dark:text-primary-foreground rounded-md'
+              {...form.register("email")}
             />
+            {form.formState.errors.email && (
+              <p className='text-red-500'>
+                {form.formState.errors.email.message}
+              </p>
+            )}
           </div>
           <div>
             <Label htmlFor='password' className='text-muted-foreground'>
@@ -81,7 +93,13 @@ const SignUp = () => {
               type='password'
               placeholder='Enter your password'
               className='w-full px-4 py-2 bg-muted dark:bg-card dark:text-primary-foreground rounded-md'
+              {...form.register("password")}
             />
+            {form.formState.errors.password && (
+              <p className='text-red-500'>
+                {form.formState.errors.password.message}
+              </p>
+            )}
           </div>
           <div>
             <Label htmlFor='confirm-password' className='text-muted-foreground'>
@@ -92,7 +110,13 @@ const SignUp = () => {
               type='password'
               placeholder='Confirm your password'
               className='w-full px-4 py-2 bg-muted dark:bg-card dark:text-primary-foreground rounded-md'
+              {...form.register("confirmPassword")}
             />
+            {form.formState.errors.confirmPassword && (
+              <p className='text-red-500'>
+                {form.formState.errors.confirmPassword.message}
+              </p>
+            )}
           </div>
           <Button
             type='submit'
@@ -104,7 +128,7 @@ const SignUp = () => {
         <div className='text-center text-muted-foreground'>
           Already have an account?{" "}
           <Link
-            href='#'
+            href='/sign-in'
             className='text-primary dark:text-primary-foreground hover:underline'
             prefetch={false}
           >
