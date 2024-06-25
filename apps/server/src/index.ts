@@ -4,11 +4,6 @@ import url from "url";
 import { AuctionManager } from "./AuctionManager";
 import { User } from "./utils/SocketManager";
 
-interface urlQuery {
-  userId: string;
-  auctionId: string;
-}
-
 const app = express();
 const httpServer = app.listen(8080);
 
@@ -24,6 +19,7 @@ wss.on("connection", async function connection(ws, req) {
   auctionManager.addUsertoAuction(new User(ws, userId, auctionId));
 
   ws.on("close", () => {
+    auctionManager.removeHandler(ws, userId, auctionId);
     console.log("client disconnected");
   });
 });

@@ -1,4 +1,5 @@
 import { WebSocket } from "ws";
+
 export class User {
   public userId: string;
   public socket: WebSocket;
