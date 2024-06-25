@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "email-notification-server",
   "version": "1.0.0",
   "main": "index.js",
   "private": true,
@@ -16,20 +16,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@prisma/client": "^5.15.1",
-    "@repo/db": "*",
-    "@repo/env": "*",
-    "@repo/typescript-config": "*",
-    "date-and-time": "^3.3.0",
-    "express": "^4.19.2",
-    "redis": "^4.6.14",
-    "ws": "^8.17.1"
+    "nodemailer": "^6.9.14",
+    "redis": "^4.6.14"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/ws": "^8.5.10",
-    "prisma": "^5.15.1",
-    "ts-node": "^10.9.2",
     "tsup": "^8.1.0"
   }
 }
