@@ -5,25 +5,22 @@ import { lucia } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import * as argon2 from "argon2";
+import { signInSchemaT } from "@/types/auth";
 
-const Signin = async (formData: FormData) => {
-  const formDataRaw = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
+const Signin = async (formData: signInSchemaT) => {
   try {
     const user = await prisma.user.findUnique({
       where: {
-        email: formDataRaw.email,
+        email: formData.email,
       },
     });
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("User not found with Entered email");
     }
-    console.log(formDataRaw.password, user.hashedPassword);
+    console.log(formData.password, user.hashedPassword);
     const validPassword = await argon2.verify(
       user.hashedPassword,
-      formDataRaw.password
+      formData.password
     );
     if (!validPassword) {
       throw new Error("Invalid password");
@@ -35,8 +32,10 @@ const Signin = async (formData: FormData) => {
       sessionCookie.value,
       sessionCookie.attributes
     );
+    redirect("/");
   } catch (error) {
-    console.log(error);
+    console.error("Error during sign in:", error);
+    throw error;
   }
 };
 export default Signin;

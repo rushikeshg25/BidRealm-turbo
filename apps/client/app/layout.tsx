@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { Toaster } from "react-hot-toast";
+import ReactQueryClientProvider from "@/providers/ReactQueryClientProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,21 +20,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
-      <body className={inter.className}>
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className='flex flex-col min-h-screen dark:bg-background dark:text-foreground'>
-            <Navbar className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60' />
-            <Toaster position='bottom-center' />
-            {children}
-          </div>
-        </ThemeProvider>{" "}
-      </body>
-    </html>
+    <ReactQueryClientProvider>
+      <html lang='en'>
+        <body className={inter.className}>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='system'
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className='flex flex-col min-h-screen dark:bg-background dark:text-foreground'>
+              <Navbar className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60' />
+              <Toaster position='bottom-center' />
+              {children}
+            </div>
+          </ThemeProvider>{" "}
+        </body>
+      </html>
+    </ReactQueryClientProvider>
   );
 }

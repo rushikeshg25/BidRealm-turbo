@@ -21,3 +21,6 @@ export const signInSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8).max(20),
 });
+
+export type signUpSchemaT = z.infer<typeof signUpSchema>;
+export type signInSchemaT = z.infer<typeof signInSchema>;

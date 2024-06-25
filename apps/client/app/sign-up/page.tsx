@@ -1,126 +1,131 @@
-"use client"; //Rushikehs
-import React from "react";
+"use client";
+import React, { use } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { signUpSchema } from "@/types/auth";
+import { signUpSchema, signUpSchemaT } from "@/types/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Label } from "@/components/ui/label";
+import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import { signUp } from "@/actions/auth/Signup";
 
 const SignUp = () => {
-  const form = useForm<z.infer<typeof signUpSchema>>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
   });
 
-  const onSubmit = async (data: any) => {
-    const formData = new FormData();
-    formData.append("userName", data.userName);
-    formData.append("email", data.email);
-    formData.append("password", data.password);
-    formData.append("confirmPassword", data.confirmPassword);
-    console.log(formData.get("userName"));
+  const { mutate: server_Signup } = useMutation({
+    mutationFn: signUp,
+    onSuccess: () => {
+      toast.success("Signup successful");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const onSubmit = async (Formdata: signUpSchemaT) => {
     try {
-      const response = await fetch("/api/signup", {
-        method: "POST",
-        body: formData,
-      });
-      if (response.ok) {
-        // Redirect or handle successful signup
-        window.location.href = "/dashboard";
-      } else {
-        // Handle errors
-        console.error("Signup failed");
-      }
+      await server_Signup(Formdata);
     } catch (error) {
-      console.error("An unexpected error occurred:", error);
+      console.log(error);
+      toast.error("Error signing up. Try again!");
     }
   };
 
   return (
     <div className='flex items-center justify-center min-h-screen bg-muted dark:bg-background'>
-      <div className='w-full max-w-md p-6 space-y-4 bg-background dark:bg-muted rounded-lg shadow-lg'>
+      <div className='w-full max-w-md p-6 space-y-4 rounded-lg shadow-lg bg-background dark:border'>
         <div className='text-center'>
-          <h1 className='text-3xl font-bold text-primary dark:text-primary-foreground'>
+          <h1 className='text-3xl font-bold text-primary dark:text-foreground'>
             Sign Up
           </h1>
           <p className='text-muted-foreground'>
             Create your account to get started.
           </p>
         </div>
-        <form className='space-y-4' onSubmit={form.handleSubmit(onSubmit)}>
-          <div>
+        <form className='space-y-2' onSubmit={handleSubmit(onSubmit)}>
+          <div className='static'>
             <Label htmlFor='username' className='text-muted-foreground'>
               Username
             </Label>
             <Input
-              id='username'
               type='text'
               placeholder='Enter your username'
-              className='w-full px-4 py-2 bg-muted dark:bg-card dark:text-primary-foreground rounded-md'
-              {...form.register("userName")}
+              className='w-full px-4 py-2 rounded-md bg-muted dark:bg-card dark:text-primary'
+              {...register("userName")}
             />
-            {form.formState.errors.userName && (
-              <p className='text-red-500'>
-                {form.formState.errors.userName.message}
-              </p>
-            )}
+            <div className='min-h-[20px]'>
+              {errors.userName && (
+                <p className='text-sm text-red-500'>
+                  {errors.userName.message}
+                </p>
+              )}
+            </div>
           </div>
           <div>
             <Label htmlFor='email' className='text-muted-foreground'>
               Email
             </Label>
             <Input
-              id='email'
               type='email'
               placeholder='Enter your email'
-              className='w-full px-4 py-2 bg-muted dark:bg-card dark:text-primary-foreground rounded-md'
-              {...form.register("email")}
+              className='w-full px-4 py-2 rounded-md bg-muted dark:bg-card dark:text-primary'
+              {...register("email")}
             />
-            {form.formState.errors.email && (
-              <p className='text-red-500'>
-                {form.formState.errors.email.message}
-              </p>
-            )}
+            <div className='min-h-[20px]'>
+              {errors.email && (
+                <p className='text-sm text-red-500'>{errors.email.message}</p>
+              )}
+            </div>
           </div>
           <div>
             <Label htmlFor='password' className='text-muted-foreground'>
               Password
             </Label>
             <Input
-              id='password'
               type='password'
               placeholder='Enter your password'
-              className='w-full px-4 py-2 bg-muted dark:bg-card dark:text-primary-foreground rounded-md'
-              {...form.register("password")}
+              className='w-full px-4 py-2 rounded-md bg-muted dark:bg-card dark:text-primary'
+              {...register("password")}
             />
-            {form.formState.errors.password && (
-              <p className='text-red-500'>
-                {form.formState.errors.password.message}
-              </p>
-            )}
+            <div className='min-h-[20px]'>
+              {errors.password && (
+                <p className='text-sm text-red-500'>
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
           </div>
           <div>
             <Label htmlFor='confirm-password' className='text-muted-foreground'>
               Confirm Password
             </Label>
             <Input
-              id='confirm-password'
               type='password'
               placeholder='Confirm your password'
-              className='w-full px-4 py-2 bg-muted dark:bg-card dark:text-primary-foreground rounded-md'
-              {...form.register("confirmPassword")}
+              className='w-full px-4 py-2 rounded-md bg-muted dark:bg-card dark:text-primary'
+              {...register("confirmPassword")}
             />
-            {form.formState.errors.confirmPassword && (
-              <p className='text-red-500'>
-                {form.formState.errors.confirmPassword.message}
-              </p>
-            )}
+            <div className='min-h-[20px]'>
+              {errors.confirmPassword && (
+                <p className='text-sm text-red-500'>
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
           </div>
           <Button
             type='submit'
-            className='w-full px-4 py-2 font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-muted'
+            disabled={isSubmitting}
+            className='w-full px-4 py-2 font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-muted'
           >
             Sign Up
           </Button>
@@ -129,7 +134,7 @@ const SignUp = () => {
           Already have an account?{" "}
           <Link
             href='/sign-in'
-            className='text-primary dark:text-primary-foreground hover:underline'
+            className='text-primary dark:text-foreground hover:underline'
             prefetch={false}
           >
             Log in

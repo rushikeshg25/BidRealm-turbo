@@ -5,28 +5,28 @@ import { redirect } from "next/navigation";
 import * as argon2 from "argon2";
 import { lucia } from "@/lib/auth";
 import prisma from "@repo/db";
+import { signUpSchemaT } from "@/types/auth";
 
-const signUp = async (formData: FormData) => {
-  const formDataRaw = {
-    userName: formData.get("userName") as string,
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-    confirmPassword: formData.get("confirmPassword") as string,
-  };
-
-  if (formDataRaw.password !== formDataRaw.confirmPassword) {
-    throw new Error("Passwords do not match");
-  }
-
+const signUp = async (Formdata: signUpSchemaT) => {
   try {
-    const hashedPassword = await argon2.hash(formDataRaw.password);
+    const hashedPassword = await argon2.hash(Formdata.password);
     const userId = generateId(15);
 
+    if (
+      await prisma.user.findUnique({ where: { userName: Formdata.userName } })
+    ) {
+      console.log("username already exists");
+      throw new Error("Username already exists");
+    }
+    if (await prisma.user.findUnique({ where: { email: Formdata.email } })) {
+      console.log("email already exists");
+      throw new Error("Email already exists");
+    }
     await prisma.user.create({
       data: {
         id: userId,
-        userName: formDataRaw.userName,
-        email: formDataRaw.email,
+        userName: Formdata.userName,
+        email: Formdata.email,
         hashedPassword,
       },
     });
@@ -38,8 +38,11 @@ const signUp = async (formData: FormData) => {
       sessionCookie.value,
       sessionCookie.attributes
     );
-  } catch (error) {}
-  redirect("/dashboard");
+  } catch (error) {
+    console.error("Error during sign up:", error);
+    throw error;
+  }
+  redirect("/");
 };
 
 export { signUp };

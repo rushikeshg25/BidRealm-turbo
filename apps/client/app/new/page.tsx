@@ -44,7 +44,7 @@ export default function Page() {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm({
+  } = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
   });
 
@@ -53,20 +53,16 @@ export default function Page() {
   };
 
   return (
-    <div className='max-w-4xl mx-auto px-4 py-10 sm:px-6 lg:px-8'>
-      <h1 className='text-3xl font-bold mb-6'>Create New Auction</h1>
+    <div className='max-w-4xl px-4 py-10 mx-auto mt-10 sm:px-6 lg:px-8 dark:border'>
+      <h1 className='mb-6 text-3xl font-bold'>Create New Auction</h1>
       <form
-        className='grid grid-cols-1 md:grid-cols-2 gap-6'
+        className='grid grid-cols-1 gap-6 md:grid-cols-2'
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className='grid gap-4'>
           <div>
             <Label htmlFor='title'>Title</Label>
-            <Input
-              id='title'
-              {...register("title")}
-              placeholder='Enter auction title'
-            />
+            <Input {...register("title")} placeholder='Enter auction title' />
             {errors.title && (
               <p className='text-red-500'>{errors.title.message}</p>
             )}
@@ -109,22 +105,12 @@ export default function Page() {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  <SelectLabel>Electronics</SelectLabel>
-                  <SelectItem value='laptops'>Laptops</SelectItem>
-                  <SelectItem value='smartphones'>Smartphones</SelectItem>
-                  <SelectItem value='tablets'>Tablets</SelectItem>
-                </SelectGroup>
-                <SelectGroup>
-                  <SelectLabel>Home & Garden</SelectLabel>
-                  <SelectItem value='furniture'>Furniture</SelectItem>
-                  <SelectItem value='decor'>Decor</SelectItem>
-                  <SelectItem value='appliances'>Appliances</SelectItem>
-                </SelectGroup>
-                <SelectGroup>
-                  <SelectLabel>Fashion</SelectLabel>
-                  <SelectItem value='clothing'>Clothing</SelectItem>
-                  <SelectItem value='accessories'>Accessories</SelectItem>
-                  <SelectItem value='shoes'>Shoes</SelectItem>
+                  <SelectItem value='Electronics'>Electronics</SelectItem>
+                  <SelectItem value='Art'>Art</SelectItem>
+                  <SelectItem value='Fashion'>Fashion</SelectItem>
+                  <SelectItem value='Vechicles'>Vechicles</SelectItem>
+                  <SelectItem value='Watches'>Watches</SelectItem>
+                  <SelectItem value='Shoes'>Shoes</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -139,7 +125,7 @@ export default function Page() {
           </div>
         </div>
       </form>
-      <div className='mt-8 flex justify-end gap-2'>
+      <div className='flex justify-end gap-2 mt-8'>
         <Button variant='outline'>Cancel</Button>
         <Button type='submit' className=''>
           Publish
