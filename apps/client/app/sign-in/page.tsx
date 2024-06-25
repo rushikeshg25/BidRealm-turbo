@@ -90,7 +90,7 @@ const SignIn = () => {
             disabled={isSubmitting}
             className='w-full px-4 py-2 font-medium rounded-md text-primary-foreground bg-primary hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-muted'
           >
-            Sign Up
+            Sign In
           </Button>
         </form>
         <div className='text-center text-muted-foreground'>

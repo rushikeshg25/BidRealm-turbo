@@ -1,11 +1,11 @@
-import CreateAuction from "@/components/pages/CreateAuction";
+import MyBiddings from "@/components/pages/MyBiddings";
 import { redirect } from "next/navigation";
 import { getAuth } from "@/lib/auth";
 
 export default async function Page() {
-  const { session } = await getAuth();
+  const { session, user } = await getAuth();
   if (!session) {
     redirect("/sign-in");
   }
-  return <CreateAuction />;
+  return <MyBiddings />;
 }
