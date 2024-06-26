@@ -18,16 +18,20 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
-export default function DateTimePickerComponent() {
-  const [selectedDateTime, setSelectedDateTime] = useState(null);
+interface DateTimePickerComponentProps {
+  Datehandler: (date: any) => void;
+}
+
+export default function DateTimePickerComponent({
+  Datehandler,
+}: DateTimePickerComponentProps) {
+  const [selectedDateTime, setSelectedDateTime] = useState(new Date());
   const [selectedHour, setSelectedHour] = useState(null);
   const [selectedMinute, setSelectedMinute] = useState(null);
-  useEffect(() => {
-    console.log("selectedDateTime", selectedDateTime);
-    console.log("selectedHour", selectedHour);
-    console.log("selectedMinute", selectedMinute);
-  }, [selectedDateTime, selectedHour, selectedMinute]);
 
+  useEffect(() => {
+    Datehandler(selectedDateTime);
+  }, [selectedDateTime]);
   const handleDateSelect = (date) => {
     setSelectedDateTime(date);
     if (selectedHour !== null && selectedMinute !== null) {
@@ -130,11 +134,6 @@ export default function DateTimePickerComponent() {
           </PopoverContent>
         </Popover>
       </div>
-      {selectedDateTime && (
-        <div className='text-2xl font-semibold'>
-          {format(selectedDateTime, "MMM d, yyyy h:mm a")}
-        </div>
-      )}
     </div>
   );
 }
