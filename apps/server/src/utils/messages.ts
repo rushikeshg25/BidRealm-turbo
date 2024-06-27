@@ -1,1 +1,2 @@
-export const PLACE_BID = "place_bid";
+export const BID = "bid";
+export const EXITAUCTION = "exitAuction";

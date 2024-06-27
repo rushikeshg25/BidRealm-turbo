@@ -2,6 +2,7 @@ import { Auction, AuctionStatus, bids } from "./Auction";
 import { User } from "./utils/SocketManager";
 import { db } from "./db";
 import { WebSocket } from "ws";
+import { BID, EXITAUCTION } from "./utils/messages";
 export class AuctionManager {
   public auctions: Map<string, Auction>; //{auctionid:Auction Class's instance}
 
@@ -52,6 +53,11 @@ export class AuctionManager {
   private addHandler(user: User) {
     user.socket.on("message", (data) => {
       const message = JSON.parse(data.toString());
+
+      if (message.type === BID) {
+      }
+      if (message.type === EXITAUCTION) {
+      }
     });
   }
 }

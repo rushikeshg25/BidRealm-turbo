@@ -16,7 +16,7 @@ export enum AuctionStatus {
 
 export class Auction {
   public auctionId: string;
-  public users: string[];
+  public users: User[];
   public currentPrice: number;
   public startDate: Date;
   public endDate: Date;
@@ -46,9 +46,25 @@ export class Auction {
   }
 
   addUser(user: User) {
-    this.users.push(user.userId);
+    this.users.push(user);
   }
   removeUser(userId: string) {
-    this.users.filter((id) => id !== userId);
+    this.users.filter((user) => user.userId !== userId);
+  }
+
+  broadcastToAuctionAllParticipants(message: string) {
+    if (this.users.length === 0) return;
+    this.users.forEach((user) => {
+      user.socket.send(message);
+    });
+  }
+
+  broadcastToAllAuctionParticipantsExcepetUser(message: string, curUser: User) {
+    if (this.users.length === 0) return;
+    this.users.forEach((user) => {
+      if (user.userId !== curUser.userId) {
+        user.socket.send(message);
+      }
+    });
   }
 }
