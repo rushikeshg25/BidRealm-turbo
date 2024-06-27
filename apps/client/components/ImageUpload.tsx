@@ -7,7 +7,11 @@ import { Suspense, useState } from "react";
 import toast from "react-hot-toast";
 import { X } from "lucide-react";
 
-export default function ImageUpload() {
+interface ImageUploadProps {
+  ImageURL: (url: string) => void;
+}
+
+export default function ImageUpload({ ImageURL }: ImageUploadProps) {
   const [imgUrl, setImgUrl] = useState<string>("");
   return (
     <div className='w-fit '>
@@ -33,6 +37,7 @@ export default function ImageUpload() {
           endpoint='imageUploader'
           onClientUploadComplete={(res) => {
             setImgUrl(res[0]?.url as string);
+            ImageURL(res[0]?.url as string);
             toast.success("Image uploaded!");
           }}
           onUploadError={(error: Error) => {
