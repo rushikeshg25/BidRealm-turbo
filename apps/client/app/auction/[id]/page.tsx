@@ -16,7 +16,7 @@ const page = async ({ params }: { params: { id: string } }) => {
   });
   console.log(typeof auction);
   console.log(auction);
-  return <Auction user={user} auctionId={params.id} />;
+  return <Auction user={user} auction={auction} />;
 };
 
 export default page;

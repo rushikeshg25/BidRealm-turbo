@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { number, string, z } from "zod";
 
 export enum AuctionStatus {
   ACTIVE,
@@ -26,3 +26,36 @@ export const Auctionschema = z
   });
 
 export type AuctionT = z.infer<typeof Auctionschema>;
+
+export type bidT = {
+  id: string;
+  amount: number;
+  createdAt: Date;
+  userId: string;
+  auctionId: string;
+};
+
+export type auctionType = {
+  id: string;
+  title: string;
+  description: string;
+  startingPrice: number;
+  currentPrice: number;
+  startDate: Date;
+  endDate: Date;
+  status: "INACTIVE" | "ACTIVE " | "ENDED";
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  image: string;
+  categories: "COLLECTABLES" | "WATCHES" | "FASHION";
+  bids: bidT[];
+  user: {
+    id: string;
+    userName: string;
+    email: string;
+    hashedPassword: string;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+};
