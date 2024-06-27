@@ -23,8 +23,8 @@ model Auction {
   id            String       @id @default(cuid())
   title         String
   description   String
-  startingPrice Float
-  currentPrice  Float
+  startingPrice Int
+  currentPrice  Int
   startDate     DateTime
   endDate       DateTime
   status        AuctionStatus
@@ -34,7 +34,7 @@ model Auction {
   user          User      @relation(fields: [userId], references: [id])
   bids          Bid[]
   image         String
-  categories    Categories
+  categories    String
 }
 
 model Bid {
@@ -54,18 +54,7 @@ model Session {
   user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
 
-enum Categories {
-  ART
-  COLLECTIBLES
-  ELECTRONICS
-  VECHICLES
-  WATCHES
-  FASHION
-  SHOES
 
-
-
-}
 
 enum AuctionStatus {
   INACTIVE
