@@ -29,13 +29,15 @@ const Navbar = ({
   user: User | null;
 }) => {
   const router = useRouter();
-  const {} = useMutation({
+  const { mutate: server_Signout } = useMutation({
     mutationFn: Signout,
     onSuccess: () => {
       router.push("/");
     },
   });
-  const LogoutHandler = () => {};
+  const LogoutHandler = () => {
+    server_Signout();
+  };
   return (
     <header
       className={cn(" py-4 px-10 flex items-center justify-between", className)}

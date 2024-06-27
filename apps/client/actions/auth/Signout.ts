@@ -17,7 +17,7 @@ const Signout = async () => {
     sessionCookie.value,
     sessionCookie.attributes
   );
-  redirect("/sign-in");
+  // redirect("/sign-in");
 };
 
 export default Signout;
