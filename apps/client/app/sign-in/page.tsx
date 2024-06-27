@@ -94,13 +94,13 @@ const SignIn = () => {
           </Button>
         </form>
         <div className='text-center text-muted-foreground'>
-          Already have an account?{" "}
+          Create an account?{" "}
           <Link
-            href='/sign-in'
+            href='/sign-up'
             className='text-primary dark:text-foreground hover:underline'
             prefetch={false}
           >
-            Log in
+            Signup
           </Link>
         </div>
       </div>

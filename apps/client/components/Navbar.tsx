@@ -72,7 +72,7 @@ const Navbar = ({
       <div className='flex items-center gap-4'>
         <ModeToggle />
         {!user ? (
-          <Button onClick={() => router.push("/sign-in")}>Get Started</Button>
+          <Button onClick={() => router.push("/sign-up")}>Get Started</Button>
         ) : (
           <>
             <DropdownMenu>
