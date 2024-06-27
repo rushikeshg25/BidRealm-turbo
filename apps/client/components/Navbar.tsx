@@ -18,6 +18,8 @@ import {
 import { User } from "lucia";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import Signout from "@/actions/auth/Signout";
 
 const Navbar = ({
   className,
@@ -27,6 +29,12 @@ const Navbar = ({
   user: User | null;
 }) => {
   const router = useRouter();
+  const {} = useMutation({
+    mutationFn: Signout,
+    onSuccess: () => {
+      router.push("/");
+    },
+  });
   const LogoutHandler = () => {};
   return (
     <header
