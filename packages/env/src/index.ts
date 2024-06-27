@@ -7,6 +7,9 @@ export const env = createEnv({
     UPLOADTHING_SECRET: z.string(),
     UPLOADTHING_APP_ID: z.string(),
     AUTH_SECRET: z.string(),
+    REDIS_PASSWORD: z.string(),
+    REDIS_HOST: z.string(),
+    REDIS_PORT: z.number(),
   },
 
   /**

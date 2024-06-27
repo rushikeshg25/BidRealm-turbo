@@ -1459,6 +1459,18 @@
   resolved "https://registry.yarnpkg.com/@t3-oss/env-core/-/env-core-0.10.1.tgz#388da647053063f7d9a7b6830537939daf697fa2"
   integrity sha512-GcKZiCfWks5CTxhezn9k5zWX3sMDIYf6Kaxy2Gx9YEQftFcz8hDRN56hcbylyAO3t4jQnQ5ifLawINsNgCDpOg==
 
+"@tanstack/query-core@5.47.0":
+  version "5.47.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.47.0.tgz#90b4d1c2d260c751891e9f56f02ee935c8265fbb"
+  integrity sha512-Ql0RBKLsTFcLPKUB/lv+miIjB/OA1c1/JgEQBhXbwOnoHuOoqTWXEWVNJnBeWWGMLbrOnQWgzy7Iwzy/CCKV7g==
+
+"@tanstack/react-query@^5.47.0":
+  version "5.47.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.47.0.tgz#59d09b01a7bbdb1019ce84966fec185848363eb1"
+  integrity sha512-f1mST6nTxh5to9fhKVTwukbvH/qAoiJFpKK3DyGnpusycukmulb/xfiZbFuP8Y68aPIsIO5I5wC8QkVZKUop+Q==
+  dependencies:
+    "@tanstack/query-core" "5.47.0"
+
 "@tootallnate/quickjs-emscripten@^0.23.0":
   version "0.23.0"
   resolved "https://registry.npmjs.org/@tootallnate/quickjs-emscripten/-/quickjs-emscripten-0.23.0.tgz"
@@ -1621,6 +1633,13 @@
   integrity sha512-uTr2m2IbJJucF3KUxgnGOZvYbN0QgkGyWxG6973HCpMYFy2KfcgYuIwkJQMQkt1VbBMlvWRbpshFTLxnxCZjKQ==
   dependencies:
     undici-types "~5.26.4"
+
+"@types/nodemailer@^6.4.15":
+  version "6.4.15"
+  resolved "https://registry.yarnpkg.com/@types/nodemailer/-/nodemailer-6.4.15.tgz#494be695e11c438f7f5df738fb4ab740312a6ed2"
+  integrity sha512-0EBJxawVNjPkng1zm2vopRctuWVCxk34JcIlRuXSf54habUWdz1FB7wHDqOqvDa8Mtpt0Q3LTXQkAs2LNyK5jQ==
+  dependencies:
+    "@types/node" "*"
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.4"
