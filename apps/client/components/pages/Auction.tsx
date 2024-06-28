@@ -2,10 +2,19 @@
 import { User } from "lucia";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { auctionType } from "@/types/auction";
-import prisma from "@repo/db";
-import { BidT } from "@repo/db/types";
+import { AuctionWithBidsandUserT } from "@repo/db/types";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import BidDialog from "../BidDialog";
+import { Button } from "../ui/button";
 
 const currentItem = {
   name: "Vintage Rolex Submariner",
@@ -39,7 +48,7 @@ const Auction = ({
   auction,
 }: {
   user: User | null;
-  auction: auctionType;
+  auction: AuctionWithBidsandUserT;
 }) => {
   const router = useRouter();
   return (
@@ -73,9 +82,17 @@ const Auction = ({
                 {/* Todo to update realtime timer */}
               </span>
             </div>
-            <Button size='lg' className='w-full'>
-              Place Bid
-            </Button>
+            {user ? (
+              <BidDialog
+                currentPrice={auction.currentPrice}
+                auctionId={auction.id}
+                userId={user?.id}
+              />
+            ) : (
+              <Button onClick={() => router.push("/login")} className='w-full'>
+                Login to Place a Bid
+              </Button>
+            )}
           </div>
           <div className='flex flex-col gap-4 bg-card p-6 rounded-lg'>
             <h2 className='text-xl font-bold'>Bid History</h2>
@@ -93,7 +110,7 @@ const Auction = ({
                       ${bid.amount.toLocaleString()}
                     </span>
                     <span className='text-muted-foreground'>
-                      {new Date(bid.timestamp).toLocaleString()}
+                      {/* {new Date(bid.timestamp).toLocaleString()} */}
                     </span>
                   </div>
                 </div>
