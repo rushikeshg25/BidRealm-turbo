@@ -43,6 +43,7 @@ model Bid {
   createdAt DateTime @default(now())
   userId    String
   auctionId String
+  
   user      User     @relation(fields: [userId], references: [id])
   auction   Auction  @relation(fields: [auctionId], references: [id])
 }

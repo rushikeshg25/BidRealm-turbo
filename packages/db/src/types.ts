@@ -37,3 +37,14 @@ export type UserwithBidsT = Prisma.UserGetPayload<{
     bids: true;
   };
 }>;
+
+export type AuctionWithBidsWithUsersAndUserT = Prisma.AuctionGetPayload<{
+  include: {
+    bids: {
+      include: {
+        user: true;
+      };
+    };
+    user: true;
+  };
+}>;
