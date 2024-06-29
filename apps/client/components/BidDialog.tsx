@@ -28,9 +28,17 @@ interface BidDialogProps {
   currentPrice: number;
   auctionId: string;
   userId: string;
+  handleModal: () => void;
+  value: boolean;
 }
 
-const BidDialog = ({ currentPrice, auctionId, userId }: BidDialogProps) => {
+const BidDialog = ({
+  currentPrice,
+  auctionId,
+  userId,
+  handleModal,
+  value,
+}: BidDialogProps) => {
   const [amount, setAmount] = useState<string>("");
   const { mutate: server_createBid } = useMutation({
     mutationFn: () => createBid(auctionId, Number(amount), userId),
@@ -59,10 +67,11 @@ const BidDialog = ({ currentPrice, auctionId, userId }: BidDialogProps) => {
   const onSubmit = async (Formdata: z.infer<typeof dialogSchema>) => {
     setAmount(Formdata.amount);
     await server_createBid();
+    handleModal();
   };
 
   return (
-    <Dialog>
+    <Dialog open={value} onOpenChange={handleModal}>
       <DialogTrigger asChild>
         <Button size='lg' className='w-full'>
           Place Bid
