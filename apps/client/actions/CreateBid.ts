@@ -15,7 +15,14 @@ export const createBid = async (
         amount: amount,
       },
     });
-    return bid;
+    await prisma.auction.update({
+      where: {
+        id: auctionId,
+      },
+      data: {
+        currentPrice: bid.amount,
+      },
+    });
   } catch (error) {
     throw error;
   }

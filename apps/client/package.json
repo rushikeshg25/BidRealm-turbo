@@ -25,6 +25,7 @@
     "argon2": "^0.40.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "date-and-time": "^3.3.0",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.2.12",
     "lucia": "^3.2.0",

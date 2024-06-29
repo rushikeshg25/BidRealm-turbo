@@ -2,7 +2,7 @@ import Auction from "@/components/pages/Auction";
 import { getAuth } from "@/lib/auth";
 import prisma from "@repo/db";
 import React from "react";
-import { AuctionWithBidsandUserT } from "@repo/db/types";
+import { AuctionWithBidsWithUsersAndUserT } from "@repo/db/types";
 import Link from "next/link";
 
 const page = async ({ params }: { params: { id: string } }) => {
@@ -12,10 +12,18 @@ const page = async ({ params }: { params: { id: string } }) => {
       id: params.id,
     },
     include: {
-      bids: true,
+      bids: {
+        include: {
+          user: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
       user: true,
     },
   });
+
   if (!auction)
     return (
       <div className='flex items-center justify-center flex-col text-lg'>
@@ -29,7 +37,12 @@ const page = async ({ params }: { params: { id: string } }) => {
       </div>
     );
 
-  return <Auction user={user} auction={auction as AuctionWithBidsandUserT} />;
+  return (
+    <Auction
+      user={user}
+      auction={auction as AuctionWithBidsWithUsersAndUserT}
+    />
+  );
 };
 
 export default page;
