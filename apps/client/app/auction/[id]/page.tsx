@@ -6,7 +6,7 @@ import { AuctionWithBidsWithUsersAndUserT } from "@repo/db/types";
 import Link from "next/link";
 
 const page = async ({ params }: { params: { id: string } }) => {
-  const { session, user } = await getAuth();
+  const { user } = await getAuth();
   const auction = await prisma.auction.findUnique({
     where: {
       id: params.id,
@@ -26,7 +26,7 @@ const page = async ({ params }: { params: { id: string } }) => {
 
   if (!auction)
     return (
-      <div className='flex items-center justify-center flex-col text-lg'>
+      <div className='flex flex-col items-center justify-center text-lg'>
         Auction not found!{" "}
         <div>
           Return to{" "}

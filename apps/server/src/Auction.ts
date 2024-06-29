@@ -1,4 +1,3 @@
-import date from "date-and-time";
 import { User } from "./utils/SocketManager";
 export interface bids {
   amount: number;
@@ -22,7 +21,6 @@ export class Auction {
   public endDate: Date;
   public bids: bids[];
   public curentBidder: string;
-  public timeLeft: number;
   public status: AuctionStatus;
 
   constructor(
@@ -41,7 +39,6 @@ export class Auction {
     this.endDate = endDate;
     this.bids = bids;
     this.curentBidder = curentBidder;
-    this.timeLeft = date.subtract(endDate, startDate).toHours();
     this.status = status;
   }
 
@@ -66,5 +63,10 @@ export class Auction {
         user.socket.send(message);
       }
     });
+  }
+
+  public calculateTimeLeft(): number {
+    const now = new Date();
+    return Math.max(0, new Date(this.endDate).getTime() - now.getTime());
   }
 }

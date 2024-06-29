@@ -1,6 +1,6 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import { User } from "lucia";
-import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import date from "date-and-time";
 import { AuctionWithBidsWithUsersAndUserT } from "@repo/db/types";
@@ -14,6 +14,9 @@ import {
 } from "@/components/ui/table";
 import BidDialog from "../BidDialog";
 import { Button } from "../ui/button";
+import AuctionTimer from "../AuctionTimer";
+
+const WS_URL = process.env.WS_URL ?? "ws://localhost:8080";
 
 const Auction = ({
   user,
@@ -22,22 +25,56 @@ const Auction = ({
   user: User | null;
   auction: AuctionWithBidsWithUsersAndUserT;
 }) => {
+  const [userInfo, setUserInfo] = useState<User | null | undefined>(user);
+  const [socket, setSocket] = useState<WebSocket | null>(null);
+
+  useEffect(() => {
+    if (!user) {
+      setUserInfo({
+        id: "test",
+        email: "test@test.com",
+      });
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const ws = new WebSocket(
+      `${WS_URL}?userId=${user?.id}&auctionId=${auction.id}`
+    );
+
+    ws.onopen = () => {
+      console.log("WebSocket connection opened");
+      setSocket(ws);
+    };
+
+    ws.onclose = () => {
+      console.log("WebSocket connection closed");
+      setSocket(null);
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [user, auction.id]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
+
   const router = useRouter();
+
   return (
-    <div className='flex flex-col items-center justify-center h-full bg-background p-4 md:p-8'>
-      <div className='w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-8'>
+    <div className='flex flex-col items-center justify-center h-full p-4 bg-background md:p-8'>
+      <div className='grid w-full max-w-6xl grid-cols-1 gap-8 md:grid-cols-2'>
         <div className='flex flex-col gap-4'>
-          <div className='flex justify-center items-center border border--card rounded-lg dark:border--card dark:border'>
+          <div className='flex items-center justify-center border rounded-lg border--card dark:border--card dark:border'>
             <img
               src={auction.image}
               alt={auction.title}
               width={250}
               height={250}
-              className='rounded-lg object-cover p-2'
+              className='object-cover p-2 rounded-lg'
             />
           </div>
           <div className='flex flex-col gap-1'>
@@ -49,7 +86,7 @@ const Auction = ({
           </div>
         </div>
         <div className='flex flex-col gap-6'>
-          <div className='flex flex-col gap-2 bg-card p-6 rounded-lg'>
+          <div className='flex flex-col gap-2 p-6 rounded-lg bg-card'>
             <div className='flex items-center justify-between'>
               <span className='text-lg font-semibold'>Current Bid</span>
               <span className='text-2xl font-bold text-primary'>
@@ -59,17 +96,20 @@ const Auction = ({
             <div className='flex items-center justify-between'>
               <span className='text-lg font-semibold'>Time Remaining</span>
               <span className='text-2xl font-bold text-primary'>
-                {JSON.stringify(auction.endDate)}
-                {/* Todo to update realtime timer */}
+                <AuctionTimer
+                  auctionId={auction.id}
+                  userId={userInfo?.id as string}
+                  socket={socket}
+                />
               </span>
             </div>
-            {user ? (
+            {userInfo?.id !== "test" ? (
               <BidDialog
                 handleModal={handleModal}
                 value={isModalOpen}
                 currentPrice={auction.currentPrice}
                 auctionId={auction.id}
-                userId={user?.id}
+                userId={userInfo?.id as string}
               />
             ) : (
               <Button onClick={() => router.push("/login")} className='w-full'>
@@ -77,7 +117,7 @@ const Auction = ({
               </Button>
             )}
           </div>
-          <div className='flex flex-col gap-4 bg-card p-6 rounded-lg'>
+          <div className='flex flex-col gap-4 p-6 rounded-lg bg-card'>
             <h2 className='text-xl font-bold'>Bid History</h2>
             <Table containerClassname='h-fit max-h-80 overflow-y-auto relative dark:border--card rounded-xl border border--card dark:border'>
               <TableHeader>

@@ -3,8 +3,9 @@ import { User } from "./utils/SocketManager";
 import { db } from "./db";
 import { WebSocket } from "ws";
 import { BID, EXITAUCTION } from "./utils/messages";
+
 export class AuctionManager {
-  public auctions: Map<string, Auction>; //{auctionid:Auction Class's instance}
+  public auctions: Map<string, Auction>;
 
   constructor() {
     this.auctions = new Map<string, Auction>();
@@ -12,31 +13,28 @@ export class AuctionManager {
 
   public async addUsertoAuction(user: User) {
     if (!this.auctions.get(user.auctionId)) {
-      // If no auction instance is found, create a new one and add the user to it
       const auction = await db.auction.findUnique({
-        where: {
-          id: user.auctionId,
-        },
-        include: {
-          bids: {
-            orderBy: { createdAt: "desc" },
-          },
-        },
+        where: { id: user.auctionId },
+        include: { bids: { orderBy: { createdAt: "desc" } } },
       });
-      this.auctions.set(
+      const auctionInstance = new Auction(
         user.auctionId,
-        new Auction(
-          user.auctionId,
-          auction?.bids[0]?.userId as string,
-          auction?.currentPrice as number,
-          auction?.startDate as Date,
-          auction?.endDate as Date,
-          auction?.bids as bids[],
-          auction?.status as unknown as AuctionStatus
-        )
+        auction?.bids[0]?.userId as string,
+        auction?.currentPrice as number,
+        auction?.startDate as Date,
+        auction?.endDate as Date,
+        auction?.bids as bids[],
+        auction?.status as unknown as AuctionStatus
       );
+      this.auctions.set(user.auctionId, auctionInstance);
     }
-    this.auctions.get(user.auctionId)?.addUser(user);
+
+    const auction = this.auctions.get(user.auctionId);
+    auction?.addUser(user);
+
+    const timeLeft = auction?.calculateTimeLeft();
+    user.socket.send(JSON.stringify({ type: "TIME_LEFT", timeLeft }));
+
     this.addHandler(user);
   }
 
@@ -55,9 +53,21 @@ export class AuctionManager {
       const message = JSON.parse(data.toString());
 
       if (message.type === BID) {
+        // Handle bid
       }
       if (message.type === EXITAUCTION) {
+        // Handle exit auction
       }
     });
+
+    setInterval(() => {
+      const auction = this.auctions.get(user.auctionId);
+      if (auction) {
+        const timeLeft = auction.calculateTimeLeft();
+        auction.broadcastToAuctionAllParticipants(
+          JSON.stringify({ type: "TIME_LEFT", timeLeft })
+        );
+      }
+    }, 1000); // Update every second
   }
 }

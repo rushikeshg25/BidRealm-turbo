@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react";
-import { useUser } from "@repo/store/useUser";
 
-const WS_URL = import.meta.env.VITE_APP_WS_URL ?? "ws://localhost:8080";
+interface User {
+  userId: string;
+  auctionId: string;
+}
 
-export const useSocket = () => {
+const WS_URL = process.env.WS_URL ?? "ws://localhost:8080";
+
+export const useSocket = ({ userId, auctionId }: User) => {
+  console.log(userId, auctionId);
   const [socket, setSocket] = useState<WebSocket | null>(null);
-  const user = useUser();
 
   useEffect(() => {
-    if (!user) return;
-    const ws = new WebSocket(`${WS_URL}?token=${user.token}`);
+    const ws = new WebSocket(
+      `${WS_URL}?userId=${userId}&auctionId=${auctionId}`
+    );
 
     ws.onopen = () => {
       setSocket(ws);
@@ -22,7 +27,7 @@ export const useSocket = () => {
     return () => {
       ws.close();
     };
-  }, [user]);
-
+  }, []);
+  console.log("socket", socket);
   return socket;
 };
