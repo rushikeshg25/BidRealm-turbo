@@ -82,7 +82,6 @@ export class Auction {
         bid: bid,
       })
     );
-    user.socket.send(JSON.stringify({ type: "BID", bid: bid }));
   }
 
   broadcastBidAlert(message: string) {

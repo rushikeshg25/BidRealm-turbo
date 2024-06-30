@@ -56,10 +56,7 @@ export class AuctionManager {
       const message = JSON.parse(data.toString());
 
       if (message.type === BID) {
-        console.log("first");
-        // Handle bid
         const auction = this.auctions.get(user.auctionId);
-        console.log(auction);
         if (auction) {
           auction.createBid(message.amount, user);
         } else {
@@ -77,7 +74,7 @@ export class AuctionManager {
       const auction = this.auctions.get(user.auctionId);
       if (auction) {
         const timeLeft = auction.calculateTimeLeft();
-        auction.broadcastToAuctionAllParticipants(
+        auction.broadcastBidAlert(
           JSON.stringify({ type: "TIME_LEFT", timeLeft })
         );
       }
