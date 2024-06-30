@@ -65,9 +65,6 @@ export class AuctionManager {
           );
         }
       }
-      if (message.type === EXITAUCTION) {
-        // Handle exit auction
-      }
     });
 
     setInterval(() => {

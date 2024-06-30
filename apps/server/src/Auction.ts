@@ -109,6 +109,13 @@ export class Auction {
 
   public calculateTimeLeft(): number {
     const now = new Date();
-    return Math.max(0, new Date(this.endDate).getTime() - now.getTime());
+    let timeLeft = Math.max(
+      0,
+      new Date(this.endDate).getTime() - now.getTime()
+    );
+    if (timeLeft <= 0) {
+      this.status = AuctionStatus.ENDED;
+    }
+    return timeLeft;
   }
 }
