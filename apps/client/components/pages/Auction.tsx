@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { User } from "lucia";
 import { useRouter } from "next/navigation";
 import date from "date-and-time";
-import { AuctionWithBidsWithUsersAndUserT } from "@repo/db/types";
+import { AuctionWithBidsWithUsersAndUserT, BidsWithUser } from "@repo/db/types";
 import {
   Table,
   TableBody,
@@ -15,6 +15,7 @@ import {
 import BidDialog from "../BidDialog";
 import { Button } from "../ui/button";
 import AuctionTimer from "../AuctionTimer";
+import toast from "react-hot-toast";
 
 const WS_URL = process.env.WS_URL ?? "ws://localhost:8080";
 
@@ -27,6 +28,10 @@ const Auction = ({
 }) => {
   const [userInfo, setUserInfo] = useState<User | null | undefined>(user);
   const [socket, setSocket] = useState<WebSocket | null>(null);
+  const [currentAmount, setCurrentAmount] = useState<number>(
+    auction.currentPrice
+  );
+  const [bids, setBids] = useState<BidsWithUser[]>(auction.bids);
 
   useEffect(() => {
     if (!user) {
@@ -41,6 +46,25 @@ const Auction = ({
     const ws = new WebSocket(
       `${WS_URL}?userId=${user?.id}&auctionId=${auction.id}`
     );
+
+    ws.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      console.log(message);
+      if (message.type === "BID") {
+        console.log(" Hello");
+        setCurrentAmount(message.bid.amount);
+        setBids((prevBids) => [...prevBids, message.bid]);
+        toast(`${message.bid.user.userName} bid ₹${message.bid.amount} `, {
+          icon: "🟢",
+        });
+      }
+      if (message.type === "JOINED") {
+        console.log("HELLO");
+        toast(`${message.data} `, {
+          icon: "🟢",
+        });
+      }
+    };
 
     ws.onopen = () => {
       console.log("WebSocket connection opened");
@@ -90,7 +114,7 @@ const Auction = ({
             <div className='flex items-center justify-between'>
               <span className='text-lg font-semibold'>Current Bid</span>
               <span className='text-2xl font-bold text-primary'>
-                ₹{auction.currentPrice.toLocaleString()}
+                ₹{currentAmount.toLocaleString()}
               </span>
             </div>
             <div className='flex items-center justify-between'>
@@ -107,9 +131,11 @@ const Auction = ({
               <BidDialog
                 handleModal={handleModal}
                 value={isModalOpen}
+                startPrice={auction.currentPrice}
                 currentPrice={auction.currentPrice}
                 auctionId={auction.id}
                 userId={userInfo?.id as string}
+                socket={socket}
               />
             ) : (
               <Button onClick={() => router.push("/login")} className='w-full'>
@@ -128,7 +154,7 @@ const Auction = ({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {auction.bids.map((bid) => (
+                {bids.map((bid) => (
                   <TableRow key={bid.id}>
                     <TableCell className='font-medium'>
                       {bid.user.userName}

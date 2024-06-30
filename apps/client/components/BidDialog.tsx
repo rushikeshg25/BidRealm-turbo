@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -20,8 +20,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { createBid } from "@/actions/CreateBid";
-import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 interface BidDialogProps {
@@ -30,30 +28,47 @@ interface BidDialogProps {
   userId: string;
   handleModal: () => void;
   value: boolean;
+  socket: WebSocket | null;
+  startPrice: number;
 }
 
 const BidDialog = ({
   currentPrice,
+  startPrice,
   auctionId,
   userId,
   handleModal,
   value,
+  socket,
 }: BidDialogProps) => {
-  const [amount, setAmount] = useState<string>("");
-  const { mutate: server_createBid } = useMutation({
-    mutationFn: () => createBid(auctionId, Number(amount), userId),
-    onSuccess: () => {
-      toast.success("Bid created successfully");
-    },
-    onError: (error) => {
-      toast.error("Error placing bid. Try again!");
-    },
-  });
+  useEffect(() => {
+    if (socket) {
+      socket.onmessage = (event) => {
+        // console.log(event);
+        const message = JSON.parse(event.data);
+        console.log(message);
+        if (message.type === "BID") {
+          console.log(" Hello");
+
+          toast(`${message.bid.user.userName} bid ₹${message.bid.amount} `, {
+            icon: "🟢",
+          });
+        }
+        if (message.type === "JOINED") {
+          console.log("HELLO");
+          toast(`${message.data} `, {
+            icon: "🟢",
+          });
+        }
+      };
+    }
+  }, [auctionId]);
+
   const dialogSchema = z.object({
     amount: z
       .string()
       .nonempty()
-      .refine((val) => Number(val) > currentPrice, {
+      .refine((val) => Number(val) > currentPrice && Number(val) > startPrice, {
         message: "Amount must be more than current price",
       }),
     confirm: z.string().refine((val) => val === "BID", {
@@ -65,8 +80,10 @@ const BidDialog = ({
   });
 
   const onSubmit = async (Formdata: z.infer<typeof dialogSchema>) => {
-    setAmount(Formdata.amount);
-    await server_createBid();
+    console.log("socket", socket);
+    socket?.send(
+      JSON.stringify({ type: "bid", amount: Number(Formdata.amount) })
+    );
     handleModal();
   };
 

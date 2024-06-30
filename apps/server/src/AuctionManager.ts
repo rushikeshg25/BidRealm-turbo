@@ -12,6 +12,9 @@ export class AuctionManager {
   }
 
   public async addUsertoAuction(user: User) {
+    user.socket.send(
+      JSON.stringify({ type: "JOINED", data: "Auction Joined" })
+    );
     if (!this.auctions.get(user.auctionId)) {
       const auction = await db.auction.findUnique({
         where: { id: user.auctionId },
@@ -53,7 +56,17 @@ export class AuctionManager {
       const message = JSON.parse(data.toString());
 
       if (message.type === BID) {
+        console.log("first");
         // Handle bid
+        const auction = this.auctions.get(user.auctionId);
+        console.log(auction);
+        if (auction) {
+          auction.createBid(message.amount, user);
+        } else {
+          user.socket.send(
+            JSON.stringify({ type: "ERROR", message: "Auction not found" })
+          );
+        }
       }
       if (message.type === EXITAUCTION) {
         // Handle exit auction

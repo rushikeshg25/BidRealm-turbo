@@ -1,3 +1,4 @@
+import { db } from "./db";
 import { User } from "./utils/SocketManager";
 export interface bids {
   amount: number;
@@ -47,6 +48,48 @@ export class Auction {
   }
   removeUser(userId: string) {
     this.users.filter((user) => user.userId !== userId);
+  }
+
+  async createBid(amount: number, user: User) {
+    this.bids.push({
+      amount,
+      userId: user.userId,
+      createdAt: new Date(),
+      auctionId: this.auctionId,
+    });
+
+    const bid = await db.bid.create({
+      data: {
+        userId: user.userId,
+        auctionId: user.auctionId,
+        amount: amount,
+      },
+      include: {
+        user: true,
+      },
+    });
+    await db.auction.update({
+      where: {
+        id: user.auctionId,
+      },
+      data: {
+        currentPrice: amount,
+      },
+    });
+    this.broadcastBidAlert(
+      JSON.stringify({
+        type: "BID",
+        bid: bid,
+      })
+    );
+    user.socket.send(JSON.stringify({ type: "BID", bid: bid }));
+  }
+
+  broadcastBidAlert(message: string) {
+    if (this.users.length === 0) return;
+    this.users.forEach((user) => {
+      user.socket.send(message);
+    });
   }
 
   broadcastToAuctionAllParticipants(message: string) {
