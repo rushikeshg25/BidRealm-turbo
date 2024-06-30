@@ -40,29 +40,6 @@ const BidDialog = ({
   value,
   socket,
 }: BidDialogProps) => {
-  useEffect(() => {
-    if (socket) {
-      socket.onmessage = (event) => {
-        // console.log(event);
-        const message = JSON.parse(event.data);
-        console.log(message);
-        if (message.type === "BID") {
-          console.log(" Hello");
-
-          toast(`${message.bid.user.userName} bid ₹${message.bid.amount} `, {
-            icon: "🟢",
-          });
-        }
-        if (message.type === "JOINED") {
-          console.log("HELLO");
-          toast(`${message.data} `, {
-            icon: "🟢",
-          });
-        }
-      };
-    }
-  }, [auctionId]);
-
   const dialogSchema = z.object({
     amount: z
       .string()
@@ -83,6 +60,7 @@ const BidDialog = ({
     socket?.send(
       JSON.stringify({ type: "bid", amount: Number(Formdata.amount) })
     );
+    form.reset();
     handleModal();
   };
 
