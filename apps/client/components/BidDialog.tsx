@@ -20,7 +20,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import toast from "react-hot-toast";
 
 interface BidDialogProps {
   currentPrice: number;

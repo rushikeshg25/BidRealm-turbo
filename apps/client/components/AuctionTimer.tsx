@@ -1,4 +1,6 @@
 "use client";
+import { bidStore } from "@/zustand/bidStore";
+import { CloudCog } from "lucide-react";
 import React, { useEffect, useState, useRef } from "react";
 import toast from "react-hot-toast";
 
@@ -13,13 +15,24 @@ const AuctionTimer = ({
 }) => {
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const timerRef = useRef<any>(null);
-
+  const { addBid, setCurrentAmount } = bidStore();
   useEffect(() => {
     if (socket) {
       socket.onmessage = (event) => {
+        if (JSON.parse(event.data).type !== "TIME_LEFT") {
+          console.log(" here");
+        }
         const message = JSON.parse(event.data);
         if (message.type === "TIME_LEFT") {
           setTimeLeft(message.timeLeft);
+        }
+        if (message.type === "BID") {
+          console.log(" reqs");
+          setCurrentAmount(message.bid.amount);
+          addBid(message.bid);
+          toast(`${message.bid.user.userName} bid ₹${message.bid.amount} `, {
+            icon: "🟢",
+          });
         }
       };
 

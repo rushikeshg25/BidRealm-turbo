@@ -16,6 +16,7 @@ import BidDialog from "../BidDialog";
 import { Button } from "../ui/button";
 import AuctionTimer from "../AuctionTimer";
 import toast from "react-hot-toast";
+import { bidStore } from "@/zustand/bidStore";
 
 const WS_URL = process.env.WS_URL ?? "ws://localhost:8080";
 
@@ -28,12 +29,11 @@ const Auction = ({
 }) => {
   const [userInfo, setUserInfo] = useState<User | null | undefined>(user);
   const [socket, setSocket] = useState<WebSocket | null>(null);
-  const [currentAmount, setCurrentAmount] = useState<number>(
-    auction.currentPrice
-  );
-  const [bids, setBids] = useState<BidsWithUser[]>(auction.bids);
+  const { initBids, bids, currentAmount, setCurrentAmount } = bidStore();
 
   useEffect(() => {
+    setCurrentAmount(auction.currentPrice);
+    initBids(auction.bids);
     if (!user) {
       setUserInfo({
         id: "test",
@@ -46,25 +46,6 @@ const Auction = ({
     const ws = new WebSocket(
       `${WS_URL}?userId=${user?.id}&auctionId=${auction.id}`
     );
-
-    ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      console.log(message);
-      if (message.type === "BID") {
-        console.log(" Hello");
-        setCurrentAmount(message.bid.amount);
-        setBids((prevBids) => [...prevBids, message.bid]);
-        toast(`${message.bid.user.userName} bid ₹${message.bid.amount} `, {
-          icon: "🟢",
-        });
-      }
-      if (message.type === "JOINED") {
-        console.log("HELLO");
-        toast(`${message.data} `, {
-          icon: "🟢",
-        });
-      }
-    };
 
     ws.onopen = () => {
       console.log("WebSocket connection opened");
@@ -154,8 +135,8 @@ const Auction = ({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {bids.map((bid) => (
-                  <TableRow key={bid.id}>
+                {bids.map((bid, index) => (
+                  <TableRow key={index}>
                     <TableCell className='font-medium'>
                       {bid.user.userName}
                     </TableCell>
@@ -165,7 +146,9 @@ const Auction = ({
                         "YYYY/MM/DD HH:mm:ss"
                       )}
                     </TableCell>
-                    <TableCell className='text-right'>{bid.amount}</TableCell>
+                    <TableCell className='text-right'>
+                      ₹{bid.amount.toLocaleString()}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
