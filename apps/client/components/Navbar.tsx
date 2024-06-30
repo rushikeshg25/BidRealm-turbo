@@ -15,7 +15,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { User } from "lucia";
+import { Session } from "lucia";
 import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
@@ -23,10 +23,10 @@ import Signout from "@/actions/auth/Signout";
 
 const Navbar = ({
   className,
-  user,
+  session,
 }: {
   className?: string;
-  user: User | null;
+  session: Session | null;
 }) => {
   const router = useRouter();
   const { mutate: server_Signout } = useMutation({
@@ -58,14 +58,14 @@ const Navbar = ({
       </div>
       <nav className='items-center hidden gap-4 md:flex'>
         <Link
-          href='#'
+          href='http://localhost:3000/live-auctions?status=active'
           className='font-medium hover:text-primary-foreground/80 dark:hover:text-primary-foreground'
           prefetch={false}
         >
           Live Auctions
         </Link>
         <Link
-          href='#'
+          href='http://localhost:3000/live-auctions?status=active'
           className='font-medium hover:text-primary-foreground/80 dark:hover:text-primary-foreground'
           prefetch={false}
         >
@@ -81,8 +81,8 @@ const Navbar = ({
       </nav>
       <div className='flex items-center gap-4'>
         <ModeToggle />
-        {!user ? (
-          <Button onClick={() => router.push("/sign-up")}>Get Started</Button>
+        {!session ? (
+          <Button onClick={() => router.push("/sign-up")}>Sign Up</Button>
         ) : (
           <>
             <DropdownMenu>
@@ -100,7 +100,7 @@ const Navbar = ({
                 <DropdownMenuItem onClick={() => router.push("/my-bids")}>
                   Bids
                 </DropdownMenuItem>
-
+                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={LogoutHandler}>
                   Logout
                 </DropdownMenuItem>

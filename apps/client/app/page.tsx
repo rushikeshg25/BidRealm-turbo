@@ -128,7 +128,7 @@ export default function Component() {
           </div>
         </div>
         <div>
-          <h3 className='text-lg font-medium mb-2'>Live Auction</h3>
+          <h3 className='text-lg font-medium mb-2'>Live Auctions</h3>
           <div className='bg-background rounded-lg p-4 space-y-4 dark:bg-card dark:text-card-foreground'>
             <div className='flex items-center justify-between'>
               <div>

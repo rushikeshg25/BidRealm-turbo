@@ -20,7 +20,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { user } = await getAuth();
+  const { session } = await getAuth();
 
   return (
     <ReactQueryClientProvider>
@@ -34,7 +34,7 @@ export default async function RootLayout({
           >
             <div className='flex flex-col min-h-screen dark:bg-background dark:text-foreground'>
               <Navbar
-                user={user}
+                session={session}
                 className='sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60'
               />
               <Toaster position='top-center' />
