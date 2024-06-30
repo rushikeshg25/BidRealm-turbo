@@ -73,6 +73,11 @@ const AuctionTimer = ({
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
+    if (hours > 24) {
+      const days = Math.floor(hours / 24);
+      const leftHours = hours % 24;
+      return `${days}d ${leftHours}h ${minutes}m ${seconds}s`;
+    }
     if (hours === 0) {
       return `${minutes}m ${seconds}s`;
     }
