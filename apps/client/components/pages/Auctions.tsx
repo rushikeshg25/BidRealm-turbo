@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import AuctionCard from "../AuctionCard";
 
 type AuctionT = {
   id: string;
@@ -20,8 +21,11 @@ type AuctionT = {
 
 const Auctions = ({ auctions }: { auctions: AuctionT[] }) => {
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
-      <Card className='dark:bg-card dark:text-card-foreground'>
+    <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8'>
+      {auctions.map((auction) => (
+        <AuctionCard key={auction.id} auction={auction} />
+      ))}
+      {/* <Card className='dark:bg-card dark:text-card-foreground'>
         <img
           src='/placeholder.svg'
           width={300}
@@ -163,7 +167,7 @@ const Auctions = ({ auctions }: { auctions: AuctionT[] }) => {
             </div>
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 };

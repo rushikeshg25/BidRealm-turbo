@@ -1,6 +1,6 @@
+import AuctionCard from "@/components/AuctionCard";
 import prisma from "@repo/db";
 
 export default async function Home() {
-  const user = await prisma.bid.findMany();
-  return <div>{JSON.stringify(user)}</div>;
+  return <div>{/* <AuctionCard auctionId={}/> */}</div>;
 }

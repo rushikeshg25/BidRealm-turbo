@@ -28,7 +28,7 @@ export enum Categories {
   ART,
   COLLECTABLES,
   ELECTRONICS,
-  VECHICLES,
+  VEHICLES,
   WATCHES,
   FASHION,
   SHOES,

@@ -3,50 +3,62 @@ import { User } from "lucia";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+type AuctionT = {
+  id: string;
+  title: string;
+  description: string;
+  startingPrice: number;
+  currentPrice: number;
+  startDate: Date;
+  endDate: Date;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userId: string;
+  image: string;
+  categories: string;
+};
+const timeLeft = (endDate: Date) => {
+  return Math.max(0, new Date(endDate).getTime() - new Date().getTime());
+};
 
 const AuctionCard = ({
   user,
-  auctionId,
+  auction,
 }: {
-  user: User | null;
-  auctionId: string;
+  user?: User | null;
+  auction: AuctionT;
 }) => {
   const router = useRouter();
   return (
-    <div className='bg-background text-foreground p-6 md:p-8 lg:p-10 rounded-lg shadow-lg max-w-[800px] mx-auto'>
+    <div className='bg-background text-foreground p-4 md:p-6 lg:p-8 rounded-lg shadow-lg max-w-[700px] mx-auto'>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8'>
-        <div>
+        <div className='flex items-center justify-center'>
           <img
-            src='/placeholder.svg'
+            src='https://utfs.io/f/d167f3b5-b5ff-4bca-a8b5-16833eba7a90-yaf61w.jpg'
             alt='Auction Item'
-            width={400}
-            height={400}
+            width={300}
+            height={300}
             className='w-full h-auto rounded-lg object-cover'
           />
         </div>
         <div className='space-y-4'>
           <div>
             <div className='inline-block rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground'>
-              Electronics
+              Vehicle
             </div>
-            <h1 className='text-2xl md:text-3xl font-bold'>
-              Apple MacBook Pro 16-inch
-            </h1>
+            <h1 className='text-2xl md:text-3xl font-bold'>{auction.title}</h1>
           </div>
           <div className='space-y-2'>
-            <p className='text-muted-foreground'>
-              Experience the power and performance of the latest MacBook Pro.
-              With a stunning 16-inch Retina display, blazing-fast M1 Pro chip,
-              and up to 21 hours of battery life, this laptop is a must-have for
-              creative professionals and power users alike.
-            </p>
             <div className='flex items-center gap-2'>
               <div className='bg-muted rounded-full w-8 h-8 flex items-center justify-center'>
                 <ClockIcon className='w-5 h-5 text-muted-foreground' />
               </div>
               <div className='text-muted-foreground'>
                 Auction ends in{" "}
-                <span className='font-medium'>2 days 12 hours</span>
+                <span className='font-medium'>
+                  {auction.endDate.toLocaleDateString()}
+                </span>
               </div>
             </div>
           </div>
