@@ -4,7 +4,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
-const Auction = ({
+const AuctionCard = ({
   user,
   auctionId,
 }: {
@@ -79,7 +79,7 @@ const Auction = ({
   );
 };
 
-export default Auction;
+export default AuctionCard;
 
 function ClockIcon(props: any) {
   return (

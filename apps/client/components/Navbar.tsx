@@ -23,6 +23,7 @@ import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import Signout from "@/actions/auth/Signout";
+import Search from "./Search";
 import {
   Sheet,
   SheetClose,
@@ -31,6 +32,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
+import path from "path";
 
 const Navbar = ({
   className,
@@ -60,18 +62,15 @@ const Navbar = ({
     >
       <Link href='/' className='flex items-center gap-2' prefetch={false}>
         <GavelIcon className='w-6 h-6' />
-        <span className='text-xl font-bold'>BidRealm</span>
+        <span className='text-xl font-bold hidden md:block'>BidRealm</span>
       </Link>
-      <div className='flex-1 max-w-md mx-6'>
-        <div className='relative'>
-          <SearchIcon className='absolute w-5 h-5 -translate-y-1/2 left-3 top-1/2 text-muted-foreground' />
-          <Input
-            type='search'
-            placeholder='Search for items...'
-            className='w-full py-2 pl-10 pr-4 rounded-md bg-primary-foreground/10 focus:outline-none focus:ring-2 focus:ring-primary-foreground/50 dark:bg-muted/10 dark:text-foreground'
-          />
+      {pathname === "/" && (
+        <div className='flex-1 max-w-md mx-6'>
+          <div className='relative'>
+            <Search />
+          </div>
         </div>
-      </div>
+      )}
       {pathname === "/" && (
         <nav className='items-center hidden gap-4 md:flex'>
           <Link

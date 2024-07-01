@@ -38,7 +38,7 @@ const Search = () => {
       {isSearching ? (
         <Loader2 className='size-5 z-20 absolute left-4 animate-spin text-muted-foreground' />
       ) : (
-        <SearchIcon className='size-5 z-20 absolute left-4 text-muted-foreground text-white' />
+        <SearchIcon className='size-5 z-20 absolute left-4 text-muted-foreground dark:text-white' />
       )}
       <div className='relative w-full'>
         <div className='flex items-center w-full'>
@@ -63,7 +63,7 @@ const Search = () => {
               variant={"ghost"}
               size={"icon"}
             >
-              <XCircleIcon className='w-5 h-5 text-muted-foreground' />
+              <XCircleIcon className='w-5 h-5 text-muted-foreground ' />
             </Button>
           )}
         </div>
