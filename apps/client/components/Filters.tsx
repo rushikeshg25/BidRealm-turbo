@@ -1,167 +1,178 @@
+"use client";
 import React from "react";
 import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
-import Link from "next/link";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
+import { Slider } from "./ui/slider";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const Filters = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const clearFiltersHandler = () => {};
+
   return (
     <div className='bg-muted rounded-lg p-6 space-y-6 dark:bg-card dark:text-card-foreground'>
       <div>
-        <h3 className='text-lg font-medium mb-2'>Categories</h3>
-        <div className='space-y-2'>
-          <Link
-            href='#'
-            className='block text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground'
-            prefetch={false}
+        <div className='flex flex-row justify-between h-full'>
+          <div className='grid items-center'>
+            <h3 className='text-lg font-medium mb-2 '>Filters</h3>
+          </div>
+          <button
+            className='text-muted-foreground text-sm'
+            onClick={clearFiltersHandler}
           >
-            Art
-          </Link>
-          <Link
-            href='#'
-            className='block text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground'
-            prefetch={false}
-          >
-            Collectibles
-          </Link>
-          <Link
-            href='#'
-            className='block text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground'
-            prefetch={false}
-          >
-            Electronics
-          </Link>
-          <Link
-            href='#'
-            className='block text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground'
-            prefetch={false}
-          >
-            Fashion
-          </Link>
-          <Link
-            href='#'
-            className='block text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground'
-            prefetch={false}
-          >
-            Home & Garden
-          </Link>
-          <Link
-            href='#'
-            className='block text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground'
-            prefetch={false}
-          >
-            Jewelry
-          </Link>
-          <Link
-            href='#'
-            className='block text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground'
-            prefetch={false}
-          >
-            Sports
-          </Link>
-          <Link
-            href='#'
-            className='block text-muted-foreground hover:text-foreground dark:text-muted-foreground dark:hover:text-foreground'
-            prefetch={false}
-          >
-            Toys
-          </Link>
+            Clear
+          </button>
         </div>
-      </div>
-      <div>
-        <h3 className='text-lg font-medium mb-2'>Filters</h3>
-        <div className='space-y-2'>
-          <div>
-            <h4 className='text-sm font-medium mb-1'>Price</h4>
-            <div className='flex items-center gap-2'>
-              <Input
-                type='number'
-                placeholder='Min'
-                className='w-full rounded-md bg-background border-input px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-primary dark:bg-card dark:border-card dark:text-card-foreground'
-              />
-              <span className='text-muted-foreground dark:text-muted-foreground'>
-                -
-              </span>
-              <Input
-                type='number'
-                placeholder='Max'
-                className='w-full rounded-md bg-background border-input px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-primary dark:bg-card dark:border-card dark:text-card-foreground'
-              />
-            </div>
-          </div>
-          <div>
-            <h4 className='text-sm font-medium mb-1'>Condition</h4>
-            <div className='space-y-1'>
-              <Label className='flex items-center gap-2 font-normal dark:text-card-foreground'>
-                <Checkbox />
-                New
-              </Label>
-              <Label className='flex items-center gap-2 font-normal dark:text-card-foreground'>
-                <Checkbox />
-                Used
-              </Label>
-              <Label className='flex items-center gap-2 font-normal dark:text-card-foreground'>
-                <Checkbox />
-                Antique
-              </Label>
-            </div>
-          </div>
-          <div>
-            <h4 className='text-sm font-medium mb-1'>Time Left</h4>
-            <div className='space-y-1'>
-              <Label className='flex items-center gap-2 font-normal dark:text-card-foreground'>
-                <Checkbox />
-                Less than 1 hour
-              </Label>
-              <Label className='flex items-center gap-2 font-normal dark:text-card-foreground'>
-                <Checkbox />
-                Less than 6 hours
-              </Label>
-              <Label className='flex items-center gap-2 font-normal dark:text-card-foreground'>
-                <Checkbox />
-                Less than 1 day
-              </Label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <h3 className='text-lg font-medium mb-2'>Live Auctions</h3>
-        <div className='bg-background rounded-lg p-4 space-y-4 dark:bg-card dark:text-card-foreground'>
-          <div className='flex items-center justify-between'>
-            <div>
-              <h4 className='text-sm font-medium'>Antique Vase</h4>
-              <p className='text-muted-foreground text-xs dark:text-muted-foreground'>
-                Ends in:
-              </p>
-            </div>
-            <div className='bg-primary text-primary-foreground px-3 py-1 rounded-md text-xs font-medium dark:bg-primary dark:text-primary-foreground'>
-              12:34:56
-            </div>
-          </div>
-          <div className='flex items-center justify-between'>
-            <div>
-              <h4 className='text-sm font-medium'>Vintage Camera</h4>
-              <p className='text-muted-foreground text-xs dark:text-muted-foreground'>
-                Ends in:
-              </p>
-            </div>
-            <div className='bg-primary text-primary-foreground px-3 py-1 rounded-md text-xs font-medium dark:bg-primary dark:text-primary-foreground'>
-              08:15:23
-            </div>
-          </div>
-          <div className='flex items-center justify-between'>
-            <div>
-              <h4 className='text-sm font-medium'>Classic Car</h4>
-              <p className='text-muted-foreground text-xs dark:text-muted-foreground'>
-                Ends in:
-              </p>
-            </div>
-            <div className='bg-primary text-primary-foreground px-3 py-1 rounded-md text-xs font-medium dark:bg-primary dark:text-primary-foreground'>
-              01:45:09
-            </div>
-          </div>
-        </div>
+        <Accordion type='single' collapsible>
+          <AccordionItem value='item-1'>
+            <AccordionTrigger>Categories</AccordionTrigger>
+            <AccordionContent>
+              <div className='grid gap-2'>
+                <Label className='flex items-center gap-2 font-normal'>
+                  <Checkbox />
+                  Clothing
+                </Label>
+                <Label className='flex items-center gap-2 font-normal'>
+                  <Checkbox />
+                  Electronics
+                </Label>
+                <Label className='flex items-center gap-2 font-normal'>
+                  <Checkbox />
+                  Home & Garden
+                </Label>
+                <Label className='flex items-center gap-2 font-normal'>
+                  <Checkbox />
+                  Sports & Outdoors
+                </Label>
+                <Label className='flex items-center gap-2 font-normal'>
+                  <Checkbox />
+                  Toys & Games
+                </Label>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        <Accordion type='single' collapsible>
+          <AccordionItem value='item-1'>
+            <AccordionTrigger>Price</AccordionTrigger>
+            <AccordionContent className='flex flex-col gap-2'>
+              <div className='flex flex-row gap-2 w-full h-full'>
+                <Input placeholder='Min' />
+                <div className='grid items-center'>
+                  <div className='text-muted-foreground dark:text-muted-foreground'>
+                    -
+                  </div>
+                </div>
+                <Input placeholder='Max' />
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        <Accordion type='single' collapsible>
+          <AccordionItem value='item-1'>
+            <AccordionTrigger>Created</AccordionTrigger>
+            <AccordionContent className='flex flex-col gap-1'>
+              <div className='flex items-center space-x-2'>
+                <Checkbox id='terms' />
+                <label
+                  htmlFor='terms'
+                  className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                >
+                  12 hrs ago
+                </label>
+              </div>
+              <div className='flex items-center space-x-2'>
+                <Checkbox id='terms' />
+                <label
+                  htmlFor='terms'
+                  className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                >
+                  2 days ago
+                </label>
+              </div>
+              <div className='flex items-center space-x-2'>
+                <Checkbox id='terms' />
+                <label
+                  htmlFor='terms'
+                  className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                >
+                  4 days ago
+                </label>
+              </div>
+              <div className='flex items-center space-x-2'>
+                <Checkbox id='terms' />
+                <label
+                  htmlFor='terms'
+                  className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                >
+                  7 days ago
+                </label>
+              </div>
+              <div className='flex items-center space-x-2'>
+                <Checkbox id='terms' />
+                <label
+                  htmlFor='terms'
+                  className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                >
+                  14 days ago
+                </label>
+              </div>
+              <div className='flex items-center space-x-2'>
+                <Checkbox id='terms' />
+                <label
+                  htmlFor='terms'
+                  className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                >
+                  20 days ago
+                </label>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        <Accordion type='single' collapsible>
+          <AccordionItem value='item-1'>
+            <AccordionTrigger>Status</AccordionTrigger>
+            <AccordionContent className='flex flex-col gap-1'>
+              <div className='flex items-center space-x-2'>
+                <Checkbox id='terms' />
+                <label
+                  htmlFor='terms'
+                  className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                >
+                  Active
+                </label>
+              </div>
+              <div className='flex items-center space-x-2'>
+                <Checkbox id='terms' />
+                <label
+                  htmlFor='terms'
+                  className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                >
+                  Ended
+                </label>
+              </div>
+              <div className='flex items-center space-x-2'>
+                <Checkbox id='terms' />
+                <label
+                  htmlFor='terms'
+                  className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                >
+                  Yet to Start
+                </label>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
       </div>
     </div>
   );

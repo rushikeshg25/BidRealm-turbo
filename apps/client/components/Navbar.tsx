@@ -71,31 +71,7 @@ const Navbar = ({
           </div>
         </div>
       )}
-      {pathname === "/" && (
-        <nav className='items-center hidden gap-4 md:flex'>
-          <Link
-            href='http://localhost:3000/live-auctions?status=active'
-            className='font-medium hover:text-primary-foreground/80 dark:hover:text-primary-foreground'
-            prefetch={false}
-          >
-            Live Auctions
-          </Link>
-          <Link
-            href='http://localhost:3000/live-auctions?status=active'
-            className='font-medium hover:text-primary-foreground/80 dark:hover:text-primary-foreground'
-            prefetch={false}
-          >
-            Upcoming
-          </Link>
-          <Link
-            href='#'
-            className='font-medium hover:text-primary-foreground/80 dark:hover:text-primary-foreground'
-            prefetch={false}
-          >
-            Closed
-          </Link>
-        </nav>
-      )}
+
       <div className='hidden md:flex items-center gap-4'>
         <ModeToggle />
         {!session ? (
