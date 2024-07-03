@@ -1,3 +1,4 @@
+"use client";
 import prisma from "@repo/db";
 import { User } from "lucia";
 import React from "react";

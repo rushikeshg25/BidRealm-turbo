@@ -67,13 +67,17 @@ const Filters = () => {
             <AccordionTrigger>Price</AccordionTrigger>
             <AccordionContent className='flex flex-col gap-2'>
               <div className='flex flex-row gap-2 w-full h-full'>
-                <Input placeholder='Min' />
+                <div className='p-1'>
+                  <Input placeholder='Min' />
+                </div>
                 <div className='grid items-center'>
                   <div className='text-muted-foreground dark:text-muted-foreground'>
                     -
                   </div>
                 </div>
-                <Input placeholder='Max' />
+                <div className='p-1'>
+                  <Input placeholder='Max' />
+                </div>
               </div>
             </AccordionContent>
           </AccordionItem>

@@ -32,7 +32,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
-import path from "path";
 
 const Navbar = ({
   className,
