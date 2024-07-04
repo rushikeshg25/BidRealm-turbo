@@ -25,6 +25,7 @@ import {
   TableCell,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
 
 const MyAuctions = async ({ user }: { user: User }) => {
   const Auctions = await prisma.auction.findMany({
@@ -34,7 +35,11 @@ const MyAuctions = async ({ user }: { user: User }) => {
   });
 
   if (Auctions.length === 0) {
-    return <div>No auctions</div>;
+    return (
+      <div className='w-full h-full flex justify-center items-center'>
+        No auctions. <Link href='/new'>Create one</Link>
+      </div>
+    );
   }
   return (
     <div className='flex min-h-screen w-full flex-col bg-muted/40'>
@@ -553,7 +558,7 @@ function PackageIcon(props: any) {
   );
 }
 
-function PanelLeftIcon(props) {
+function PanelLeftIcon(props: any) {
   return (
     <svg
       {...props}
@@ -573,7 +578,7 @@ function PanelLeftIcon(props) {
   );
 }
 
-function SearchIcon(props) {
+function SearchIcon(props: any) {
   return (
     <svg
       {...props}
@@ -593,7 +598,7 @@ function SearchIcon(props) {
   );
 }
 
-function SettingsIcon(props) {
+function SettingsIcon(props: any) {
   return (
     <svg
       {...props}
@@ -613,7 +618,7 @@ function SettingsIcon(props) {
   );
 }
 
-function ShoppingCartIcon(props) {
+function ShoppingCartIcon(props: any) {
   return (
     <svg
       {...props}
@@ -634,7 +639,7 @@ function ShoppingCartIcon(props) {
   );
 }
 
-function UsersIcon(props) {
+function UsersIcon(props: any) {
   return (
     <svg
       {...props}
