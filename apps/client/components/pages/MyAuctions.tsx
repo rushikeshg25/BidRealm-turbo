@@ -26,6 +26,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { AuctionWithBidsT } from "@repo/db/types";
+import Search from "../Search";
 
 const MyAuctions = ({
   user,
@@ -57,12 +58,7 @@ const MyAuctions = ({
           <header className='sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6'>
             <h1>My Auctions</h1>
             <div className='relative ml-auto flex-1 md:grow-0'>
-              <SearchIcon className='absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground' />
-              <Input
-                type='search'
-                placeholder='Search...'
-                className='w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]'
-              />
+              <Search />
             </div>
           </header>
           <main className='grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8'>
@@ -112,7 +108,7 @@ const MyAuctions = ({
                             Price
                           </TableHead>
                           <TableHead className='hidden md:table-cell'>
-                            Total Sales
+                            Total Bids
                           </TableHead>
                           <TableHead className='hidden md:table-cell'>
                             Created at
@@ -126,13 +122,23 @@ const MyAuctions = ({
                         {Auctions.map((auction) => (
                           <TableRow key={auction.id}>
                             <TableCell className='hidden sm:table-cell'>
-                              <img
-                                alt='Product image'
-                                className='aspect-square rounded-md object-cover'
-                                height='64'
-                                src='/placeholder.svg'
-                                width='64'
-                              />
+                              {auction.image ? (
+                                <img
+                                  alt='Product image'
+                                  className='aspect-square rounded-md object-cover'
+                                  height='64'
+                                  src={auction.image}
+                                  width='64'
+                                />
+                              ) : (
+                                <div className='aspect-square rounded-md bg-background'>
+                                  <div className='flex h-full w-full items-center justify-center'>
+                                    <div className='text-muted-foreground'>
+                                      No Image
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
                             </TableCell>
                             <TableCell className='font-medium'>
                               {auction.title}
@@ -141,6 +147,7 @@ const MyAuctions = ({
                               <Badge variant='outline'>Draft</Badge>
                             </TableCell>
                             <TableCell className='hidden md:table-cell'>
+                              ₹
                               {auction.currentPrice === 0
                                 ? auction.startingPrice
                                 : auction.currentPrice}
@@ -156,52 +163,6 @@ const MyAuctions = ({
                             </TableCell>
                           </TableRow>
                         ))}
-
-                        <TableRow>
-                          <TableCell className='hidden sm:table-cell'>
-                            <img
-                              alt='Product image'
-                              className='aspect-square rounded-md object-cover'
-                              height='64'
-                              src='/placeholder.svg'
-                              width='64'
-                            />
-                          </TableCell>
-                          <TableCell className='font-medium'>
-                            Laser Lemonade Machine
-                          </TableCell>
-                          <TableCell>
-                            <Badge variant='outline'>Draft</Badge>
-                          </TableCell>
-                          <TableCell className='hidden md:table-cell'>
-                            $499.99
-                          </TableCell>
-                          <TableCell className='hidden md:table-cell'>
-                            25
-                          </TableCell>
-                          <TableCell className='hidden md:table-cell'>
-                            2023-07-12 10:42 AM
-                          </TableCell>
-                          <TableCell>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button
-                                  aria-haspopup='true'
-                                  size='icon'
-                                  variant='ghost'
-                                >
-                                  <MoveHorizontalIcon className='h-4 w-4' />
-                                  <span className='sr-only'>Toggle menu</span>
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align='end'>
-                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                <DropdownMenuItem>Edit</DropdownMenuItem>
-                                <DropdownMenuItem>Delete</DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
-                        </TableRow>
                       </TableBody>
                     </Table>
                   </CardContent>
