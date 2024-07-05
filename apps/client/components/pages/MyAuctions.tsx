@@ -2,15 +2,15 @@
 import { User } from "lucia";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Ellipsis } from "lucide-react";
 import date from "date-and-time";
 import { useRouter } from "next/navigation";
 import { mkConfig, generateCsv, download } from "export-to-csv";
+import { formatMoney } from "@/utils/format";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
-  DropdownMenuLabel,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -27,6 +27,7 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { AuctionWithBidsT } from "@repo/db/types";
 import Search from "../Search";
+import toast from "react-hot-toast";
 
 const MyAuctions = ({
   user,
@@ -38,26 +39,18 @@ const MyAuctions = ({
   const router = useRouter();
   const csvConfig = mkConfig({ useKeysAsHeaders: true });
   const csvDownload = () => {
-    const csv = generateCsv(csvConfig)(Auctions);
+    //@ts-ignore
+    const csv = generateCsv(csvConfig)(JSON.stringify([...Auctions]));
     download(csvConfig)(csv);
   };
-  if (!Auctions || Auctions.length === 0) {
-    return (
-      <div className='w-full h-full flex justify-center items-center'>
-        No auctions.{" "}
-        <Link href='/new' className='underline underline-offset-2'>
-          Create one
-        </Link>
-      </div>
-    );
-  }
+
   return (
     <div className='container mx-auto py-8 px-4 sm:px-6 lg:px-8 '>
       <div className='flex min-h-screen w-full flex-col '>
         <div className='flex flex-col sm:gap-4 sm:py-4 '>
           <header className='sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6'>
             <h1>My Auctions</h1>
-            <div className='relative ml-auto flex-1 md:grow-0'>
+            <div className='relative ml-auto flex-grow-0 md:grow-0'>
               <Search />
             </div>
           </header>
@@ -118,52 +111,107 @@ const MyAuctions = ({
                           </TableHead>
                         </TableRow>
                       </TableHeader>
-                      <TableBody>
-                        {Auctions.map((auction) => (
-                          <TableRow key={auction.id}>
-                            <TableCell className='hidden sm:table-cell'>
-                              {auction.image ? (
-                                <img
-                                  alt='Product image'
-                                  className='aspect-square rounded-md object-cover'
-                                  height='64'
-                                  src={auction.image}
-                                  width='64'
-                                />
-                              ) : (
-                                <div className='aspect-square rounded-md bg-background'>
-                                  <div className='flex h-full w-full items-center justify-center'>
-                                    <div className='text-muted-foreground'>
-                                      No Image
+                      {Auctions.length === 0 ? (
+                        <TableBody>
+                          <TableRow>
+                            <TableCell colSpan={6}>
+                              No auctions.{" "}
+                              <Link
+                                href='/new'
+                                className='underline underline-offset-2'
+                              >
+                                Create one
+                              </Link>
+                            </TableCell>
+                          </TableRow>{" "}
+                        </TableBody>
+                      ) : (
+                        <TableBody>
+                          {Auctions.map((auction) => (
+                            <TableRow key={auction.id}>
+                              <TableCell className='hidden sm:table-cell'>
+                                {auction.image ? (
+                                  <img
+                                    alt='Product image'
+                                    className='aspect-square rounded-md object-cover'
+                                    height='64'
+                                    src={auction.image}
+                                    width='64'
+                                  />
+                                ) : (
+                                  <div className='aspect-square rounded-md bg-background'>
+                                    <div className='flex h-full w-full items-center justify-center'>
+                                      <div className='text-muted-foreground'>
+                                        No Image
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              )}
-                            </TableCell>
-                            <TableCell className='font-medium'>
-                              {auction.title}
-                            </TableCell>
-                            <TableCell>
-                              <Badge variant='outline'>Draft</Badge>
-                            </TableCell>
-                            <TableCell className='hidden md:table-cell'>
-                              ₹
-                              {auction.currentPrice === 0
-                                ? auction.startingPrice
-                                : auction.currentPrice}
-                            </TableCell>
-                            <TableCell className='hidden md:table-cell'>
-                              {auction.bids.length}
-                            </TableCell>
-                            <TableCell className='hidden md:table-cell'>
-                              {date.format(
-                                auction.createdAt,
-                                "YYYY/MM/DD HH:mm:ss"
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
+                                )}
+                              </TableCell>
+                              <TableCell className='font-medium'>
+                                {auction.title}
+                              </TableCell>
+                              <TableCell>
+                                <Badge variant='outline'>Draft</Badge>
+                              </TableCell>
+                              <TableCell className='hidden md:table-cell'>
+                                ₹
+                                {auction.currentPrice === 0
+                                  ? formatMoney(auction.startingPrice)
+                                  : formatMoney(auction.currentPrice)}
+                              </TableCell>
+                              <TableCell className='hidden md:table-cell'>
+                                {formatMoney(auction.bids.length)}
+                              </TableCell>
+                              <TableCell className='hidden md:table-cell'>
+                                {auction.bids.length}
+                              </TableCell>
+                              <TableCell className='hidden md:table-cell'>
+                                {date.format(
+                                  auction.createdAt,
+                                  "YYYY/MM/DD HH:mm:ss"
+                                )}
+                              </TableCell>
+                              <TableCell className='hidden md:table-cell'>
+                                <DropdownMenu>
+                                  <DropdownMenuTrigger asChild>
+                                    <Button
+                                      size='sm'
+                                      variant='outline'
+                                      className='h-8 gap-1'
+                                    >
+                                      <Ellipsis />
+                                      <span className='sr-only sm:not-sr-only sm:whitespace-nowrap'>
+                                        View
+                                      </span>
+                                    </Button>
+                                  </DropdownMenuTrigger>
+
+                                  <DropdownMenuContent>
+                                    <DropdownMenuItem
+                                      onClick={() => {
+                                        router.push(`/auction/${auction.id}`);
+                                      }}
+                                    >
+                                      Go to Auction
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                      onClick={() => {
+                                        navigator.clipboard.writeText(
+                                          `/auction/${auction.id}`
+                                        );
+                                        toast.success("Copied to clipboard");
+                                      }}
+                                    >
+                                      Copy Link
+                                    </DropdownMenuItem>
+                                  </DropdownMenuContent>
+                                </DropdownMenu>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      )}
                     </Table>
                   </CardContent>
                 </Card>
