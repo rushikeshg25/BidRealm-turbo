@@ -54,3 +54,6 @@ export type BidsWithUser = Prisma.BidGetPayload<{
     user: true;
   };
 }>;
+
+export const AuctionStatusHelper = AuctionStatus;
+export const AuctionStatusHelperT = AuctionStatus;
