@@ -17,7 +17,7 @@ wss.on("connection", async function connection(ws, req) {
   const auctionId = queries.auctionId as string;
 
   auctionManager.addUsertoAuction(new User(ws, userId, auctionId));
-
+  auctionManager.updateAuctionStatuses();
   ws.on("close", () => {
     auctionManager.removeHandler(ws, userId, auctionId);
     console.log("client disconnected");

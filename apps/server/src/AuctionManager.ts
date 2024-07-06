@@ -2,7 +2,7 @@ import { Auction, AuctionStatus, bids } from "./Auction";
 import { User } from "./utils/SocketManager";
 import { db } from "./db";
 import { WebSocket } from "ws";
-import { BID, EXITAUCTION } from "./utils/messages";
+import { BID } from "./utils/messages";
 
 export class AuctionManager {
   public auctions: Map<string, Auction>;
@@ -51,13 +51,28 @@ export class AuctionManager {
     }
   }
 
+  public updateAuctionStatuses() {
+    this.auctions.forEach((auction) => {
+      const now = new Date();
+
+      if (now > auction.endDate && auction.status !== AuctionStatus.ENDED) {
+        auction.setStatus(AuctionStatus.ENDED);
+      } else if (
+        now > auction.startDate &&
+        auction.status !== AuctionStatus.ACTIVE
+      ) {
+        auction.setStatus(AuctionStatus.ACTIVE);
+      }
+    });
+  }
+
   private addHandler(user: User) {
     user.socket.on("message", (data) => {
       const message = JSON.parse(data.toString());
 
       if (message.type === BID) {
         const auction = this.auctions.get(user.auctionId);
-        if (auction) {
+        if (auction && auction.status === AuctionStatus.ACTIVE) {
           auction.createBid(message.amount, user);
         } else {
           user.socket.send(
@@ -75,6 +90,6 @@ export class AuctionManager {
           JSON.stringify({ type: "TIME_LEFT", timeLeft })
         );
       }
-    }, 1000); // Update every second
+    }, 1000);
   }
 }

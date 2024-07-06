@@ -1,5 +1,6 @@
-import { db } from "./db";
+import { db, AuctionStatusHelper } from "./db";
 import { User } from "./utils/SocketManager";
+
 export interface bids {
   amount: number;
   userId: String;
@@ -106,7 +107,37 @@ export class Auction {
       }
     });
   }
-
+  public async setStatus(status: AuctionStatus) {
+    if (status === AuctionStatus.ENDED) {
+      await db.auction.update({
+        where: {
+          id: this.auctionId,
+        },
+        data: {
+          status: AuctionStatusHelper.ENDED,
+        },
+      });
+    } else if (status === AuctionStatus.ACTIVE) {
+      await db.auction.update({
+        where: {
+          id: this.auctionId,
+        },
+        data: {
+          status: AuctionStatusHelper.ACTIVE,
+        },
+      });
+    } else if (status === AuctionStatus.INACTIVE) {
+      await db.auction.update({
+        where: {
+          id: this.auctionId,
+        },
+        data: {
+          status: AuctionStatusHelper.INACTIVE,
+        },
+      });
+    }
+    this.status = status;
+  }
   public calculateTimeLeft(): number {
     const now = new Date();
     let timeLeft = Math.max(
