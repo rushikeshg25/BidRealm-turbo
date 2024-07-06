@@ -92,7 +92,7 @@ const AuctionCard = ({
               <div className='bg-muted rounded-full w-8 h-8 flex items-center justify-center'>
                 <ClockIcon className='w-5 h-5 text-muted-foreground' />
               </div>
-              <div className='text-muted-foreground'>
+              <div className='text-muted-foreground text-sm'>
                 {auction.status === "ACTIVE"
                   ? `Auction ends on ${time(auction.endDate)}`
                   : auction.status === "ENDED"
