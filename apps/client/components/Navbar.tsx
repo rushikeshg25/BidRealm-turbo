@@ -2,9 +2,7 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
 import GavelIcon from "./icons/GavelIcon";
-import SearchIcon from "./icons/SearchIcon";
 import UserIcon from "./icons/UserIcon";
 import { ModeToggle } from "./ThemeToggle";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
@@ -72,6 +70,12 @@ const Navbar = ({
       )}
 
       <div className='hidden md:flex items-center gap-4'>
+        <Link
+          href={"/new"}
+          className='bg-black text-white px-4 py-2 rounded-lg hover:cursor:pointer dark:bg-white dark:text-black hidden md:block'
+        >
+          New Auction
+        </Link>
         <ModeToggle />
         {!session ? (
           <Button onClick={() => router.push("/sign-up")}>Sign Up</Button>
