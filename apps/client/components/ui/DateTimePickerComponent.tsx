@@ -101,7 +101,7 @@ export default function DateTimePickerComponent({
                   />
                 </SelectTrigger>
                 <SelectContent>
-                  {[...Array(12)].map((_, i) => (
+                  {[...Array(24)].map((_, i) => (
                     <SelectItem key={i} value={String(i + 1)}>
                       {i + 1}
                     </SelectItem>
