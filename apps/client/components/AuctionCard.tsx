@@ -3,6 +3,7 @@ import { User } from "lucia";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import date from "date-and-time";
 type AuctionT = {
   id: string;
   title: string;
@@ -37,8 +38,8 @@ const formatTime = (milliseconds: any) => {
   }
   return `${hours}h ${minutes}m ${seconds}s`;
 };
-const timeLeft = (endDate: Date) => {
-  return Math.max(0, new Date(endDate).getTime() - new Date().getTime());
+const time = (timeStamp: Date) => {
+  return date.format(timeStamp, "MMM DD  HH:mm");
 };
 const formatMoney = (amount: number) => {
   if (amount >= 100000 && amount < 10000000) {
@@ -63,13 +64,21 @@ const AuctionCard = ({
     <div className='bg-background text-foreground p-4 md:p-6 lg:p-8 rounded-lg shadow-lg max-w-[700px] mx-auto'>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8'>
         <div className='flex items-center justify-center'>
-          <img
-            src='https://utfs.io/f/d167f3b5-b5ff-4bca-a8b5-16833eba7a90-yaf61w.jpg'
-            alt='Auction Item'
-            width={300}
-            height={300}
-            className='w-full h-auto rounded-lg object-cover'
-          />
+          {auction.image ? (
+            <img
+              src={auction.image}
+              alt='Auction Item'
+              width={300}
+              height={300}
+              className='w-full h-auto rounded-lg object-cover'
+            />
+          ) : (
+            <div className='aspect-square rounded-md bg-background'>
+              <div className='flex h-full w-full items-center justify-center'>
+                <div className='text-muted-foreground'>No Image</div>
+              </div>
+            </div>
+          )}
         </div>
         <div className='space-y-4'>
           <div>
@@ -84,10 +93,11 @@ const AuctionCard = ({
                 <ClockIcon className='w-5 h-5 text-muted-foreground' />
               </div>
               <div className='text-muted-foreground'>
-                Auction ends in{" "}
-                <span className='font-medium'>
-                  {auction.endDate.toLocaleDateString()}
-                </span>
+                {auction.status === "ACTIVE"
+                  ? `Auction ends on ${time(auction.endDate)}`
+                  : auction.status === "ENDED"
+                    ? "Auction ended"
+                    : `Auction starts on ${time(auction.startDate)}`}
               </div>
             </div>
           </div>
@@ -113,7 +123,11 @@ const AuctionCard = ({
               <div className='text-lg font-medium text-primary'>Live</div>
             </div>
             <div className='flex items-end justify-center'>
-              <Button size='lg' className='w-full'>
+              <Button
+                size='lg'
+                className='w-full'
+                onClick={() => router.push(`/auction/${auction.id}`)}
+              >
                 Place Bid
               </Button>
             </div>
