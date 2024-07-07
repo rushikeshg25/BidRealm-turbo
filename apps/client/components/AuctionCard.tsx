@@ -128,7 +128,7 @@ const AuctionCard = ({
                 className='w-full'
                 onClick={() => router.push(`/auction/${auction.id}`)}
               >
-                Place Bid
+                Bid
               </Button>
             </div>
           </div>
