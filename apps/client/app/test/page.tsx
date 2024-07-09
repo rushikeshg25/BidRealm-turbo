@@ -1,6 +1,7 @@
-import AuctionCard from "@/components/AuctionCard";
-import prisma from "@repo/db";
+import React from "react";
 
-export default async function Home() {
-  return <div>{/* <AuctionCard auctionId={}/> */}</div>;
-}
+const page = () => {
+  return <div>page</div>;
+};
+
+export default page;
