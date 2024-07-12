@@ -1,17 +1,23 @@
 "use server";
 
 import prisma from "@repo/db";
-import { getAuth } from "@/lib/auth";
-import { redirect } from "next/navigation";
 
 export const getAuctions = async ({
   search,
   offset = 0,
   limit = 10,
+  min,
+  max,
+  status,
+  categories,
 }: {
   search?: string | undefined;
   offset?: number;
   limit?: number;
+  min?: string;
+  max?: string;
+  status?: string[];
+  categories?: string[];
 }) => {
   const auctions = await prisma.auction.findMany({
     where: {
@@ -19,6 +25,7 @@ export const getAuctions = async ({
         contains: search,
         mode: "insensitive",
       },
+      // categories: "vehicles",
     },
     orderBy: {
       createdAt: "desc",
