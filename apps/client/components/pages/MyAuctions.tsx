@@ -28,6 +28,8 @@ import Link from "next/link";
 import { AuctionWithBidsT } from "@repo/db/types";
 import Search from "../Search";
 import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
+import { deleteAuction } from "@/actions/DeleteAuction";
 
 const MyAuctions = ({
   user,
@@ -43,18 +45,27 @@ const MyAuctions = ({
     const csv = generateCsv(csvConfig)(JSON.stringify([...Auctions]));
     download(csvConfig)(csv);
   };
+  const { mutate: server_deleteAuction } = useMutation({
+    mutationFn: deleteAuction,
+    onSuccess: () => {
+      toast.success("Auction deleted successfully");
+    },
+    onError: (error) => {
+      toast.error("Error deleting auction");
+    },
+  });
 
   return (
-    <div className='container mx-auto py-8 px-4 sm:px-6 lg:px-8 '>
-      <div className='flex min-h-screen w-full flex-col '>
+    <div className='container px-4 py-8 mx-auto sm:px-6 lg:px-8 '>
+      <div className='flex flex-col w-full min-h-screen '>
         <div className='flex flex-col sm:gap-4 sm:py-4 '>
-          <header className='sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6'>
+          <header className='sticky top-0 z-30 flex items-center gap-4 px-4 border-b h-14 bg-background sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6'>
             <h1>My Auctions</h1>
-            <div className='relative ml-auto flex-grow-0 md:grow-0'>
+            <div className='relative flex-grow-0 ml-auto md:grow-0'>
               <Search />
             </div>
           </header>
-          <main className='grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8'>
+          <main className='grid items-start flex-1 gap-4 p-4 sm:px-6 sm:py-0 md:gap-8'>
             <Tabs defaultValue='all'>
               <div className='flex items-center'>
                 <TabsList>
@@ -62,7 +73,7 @@ const MyAuctions = ({
                   <TabsTrigger value='active'>Active</TabsTrigger>
                   <TabsTrigger value='draft'>Ended</TabsTrigger>
                 </TabsList>
-                <div className='ml-auto flex items-center gap-2'>
+                <div className='flex items-center gap-2 ml-auto'>
                   <Button
                     size='sm'
                     variant='outline'
@@ -133,14 +144,14 @@ const MyAuctions = ({
                                 {auction.image ? (
                                   <img
                                     alt='Product image'
-                                    className='aspect-square rounded-md object-cover'
+                                    className='object-cover rounded-md aspect-square'
                                     height='64'
                                     src={auction.image}
                                     width='64'
                                   />
                                 ) : (
-                                  <div className='aspect-square rounded-md bg-background'>
-                                    <div className='flex h-full w-full items-center justify-center'>
+                                  <div className='rounded-md aspect-square bg-background'>
+                                    <div className='flex items-center justify-center w-full h-full'>
                                       <div className='text-muted-foreground'>
                                         No Image
                                       </div>
@@ -205,6 +216,15 @@ const MyAuctions = ({
                                     >
                                       Copy Link
                                     </DropdownMenuItem>
+                                    {auction.status === "INACTIVE" && (
+                                      <DropdownMenuItem
+                                        onClick={() => {
+                                          server_deleteAuction(auction.id);
+                                        }}
+                                      >
+                                        Delete Auction
+                                      </DropdownMenuItem>
+                                    )}
                                   </DropdownMenuContent>
                                 </DropdownMenu>
                               </TableCell>
