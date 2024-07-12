@@ -85,8 +85,8 @@ const Navbar = ({
           <>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <div className='flex items-center justify-center border border-black rounded-full dark:border-white size-8'>
-                  <UserIcon className='w-7 h-7' />
+                <div className='flex items-center justify-center border border-[#98989a] rounded-full dark:border-white size-8'>
+                  <UserIcon className='w-7 h-7 font-light dark:text-white' />
                 </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent>

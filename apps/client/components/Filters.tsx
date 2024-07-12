@@ -66,7 +66,7 @@ const Filters = () => {
     setCategories((prevCategories) =>
       prevCategories.includes(category)
         ? prevCategories.filter((c) => c !== category)
-        : [...prevCategories, category],
+        : [...prevCategories, category]
     );
   };
 
@@ -74,29 +74,29 @@ const Filters = () => {
     setStatus((prevStaus) =>
       prevStaus.includes(newStatus)
         ? prevStaus.filter((s) => s !== newStatus)
-        : [...prevStaus, newStatus],
+        : [...prevStaus, newStatus]
     );
   };
 
   return (
-    <div className="bg-muted rounded-lg p-6 space-y-6 dark:bg-card dark:text-card-foreground">
-      <div className="h-full flex flex-col">
-        <div className="flex flex-row justify-between ">
-          <div className="grid items-center">
-            <h3 className="text-lg font-medium mb-2 ">Filters</h3>
+    <div className='bg-muted rounded-lg p-6 space-y-6 dark:bg-card dark:text-card-foreground'>
+      <div className='h-full flex flex-col'>
+        <div className='flex flex-row justify-between '>
+          <div className='grid items-center'>
+            <h3 className='text-lg font-medium mb-2 '>Filters</h3>
           </div>
           <button
-            className="text-muted-foreground text-sm"
+            className='text-muted-foreground text-sm'
             onClick={clearFiltersHandler}
           >
             Clear
           </button>
         </div>
-        <Accordion type="single" collapsible>
-          <AccordionItem value="item-1">
+        <Accordion type='single' collapsible>
+          <AccordionItem value='item-1'>
             <AccordionTrigger>Categories</AccordionTrigger>
             <AccordionContent>
-              <div className="grid gap-2">
+              <div className='grid gap-2'>
                 {[
                   "Art",
                   "Collectables",
@@ -108,7 +108,7 @@ const Filters = () => {
                 ].map((category) => (
                   <Label
                     key={category}
-                    className="flex items-center gap-2 font-normal"
+                    className='flex items-center gap-2 font-normal'
                   >
                     <Checkbox
                       checked={categories.includes(category)}
@@ -121,26 +121,26 @@ const Filters = () => {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <Accordion type="single" collapsible>
-          <AccordionItem value="item-2">
+        <Accordion type='single' collapsible>
+          <AccordionItem value='item-2'>
             <AccordionTrigger>Price</AccordionTrigger>
-            <AccordionContent className="flex flex-col gap-2">
-              <div className="flex flex-row gap-2 w-full h-full">
-                <div className="p-1">
+            <AccordionContent className='flex flex-col gap-2'>
+              <div className='flex flex-row gap-2 w-full h-full'>
+                <div className='p-1'>
                   <Input
-                    placeholder="Min"
+                    placeholder='Min'
                     value={minPrice || ""}
                     onChange={(e) => setMinPrice(Number(e.target.value))}
                   />
                 </div>
-                <div className="grid items-center">
-                  <div className="text-muted-foreground dark:text-muted-foreground">
+                <div className='grid items-center'>
+                  <div className='text-muted-foreground dark:text-muted-foreground'>
                     -
                   </div>
                 </div>
-                <div className="p-1">
+                <div className='p-1'>
                   <Input
-                    placeholder="Max"
+                    placeholder='Max'
                     value={maxPrice || ""}
                     onChange={(e) => setMaxPrice(Number(e.target.value))}
                   />
@@ -150,19 +150,19 @@ const Filters = () => {
           </AccordionItem>
         </Accordion>
 
-        <Accordion type="single" collapsible>
-          <AccordionItem value="item-4">
+        <Accordion type='single' collapsible>
+          <AccordionItem value='item-4'>
             <AccordionTrigger>Status</AccordionTrigger>
 
-            <AccordionContent className="flex flex-col gap-1">
+            <AccordionContent className='flex flex-col gap-1'>
               {["Active", "Ended", "Inactive"].map((s) => (
-                <div key={s} className="flex items-center space-x-2">
+                <div key={s} className='flex items-center space-x-2'>
                   <Checkbox
                     checked={status?.includes(s)}
                     onCheckedChange={() => handleStatusChange(s)}
                   />
 
-                  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  <label className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'>
                     {s}
                   </label>
                 </div>
@@ -170,7 +170,7 @@ const Filters = () => {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <Link href={"/"} className="mt-auto">
+        <Link href={"/"} className='mt-auto font-medium pt-4'>
           Contact & Support
         </Link>
       </div>
