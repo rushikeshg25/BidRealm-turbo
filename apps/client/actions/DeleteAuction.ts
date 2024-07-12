@@ -1,5 +1,6 @@
 "use server";
 import prisma from "@repo/db";
+import { revalidatePath } from "next/cache";
 
 export const deleteAuction = async (id: string) => {
   try {
@@ -19,6 +20,7 @@ export const deleteAuction = async (id: string) => {
         id: id,
       },
     });
+    revalidatePath("/my-auctions");
   } catch (error) {
     throw error;
   }
