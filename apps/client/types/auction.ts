@@ -1,4 +1,4 @@
-import { number, string, z } from "zod";
+import { z } from "zod";
 
 export enum AuctionStatus {
   ACTIVE,
@@ -9,7 +9,10 @@ export enum AuctionStatus {
 
 export const Auctionschema = z
   .object({
-    title: z.string().min(1, { message: "Title is required" }),
+    title: z
+      .string()
+      .min(1, { message: "Title is required" })
+      .max(50, { message: "Title is too long" }),
     description: z.string().min(1, { message: "Description is required" }),
     startingPrice: z.number().min(1, { message: "Starting price is required" }),
     startDate: z.date().refine((date) => date > new Date(), {

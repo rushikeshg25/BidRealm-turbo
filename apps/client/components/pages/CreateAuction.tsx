@@ -161,7 +161,7 @@ const CreateAuction = ({ user }: { user: User }) => {
                 }}
               >
                 <SelectTrigger className='w-full'>
-                  <SelectValue placeholder='Select categories' />
+                  <SelectValue placeholder='Select category' />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
