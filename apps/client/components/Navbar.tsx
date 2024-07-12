@@ -93,7 +93,7 @@ const Navbar = ({
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => router.push("/my-auctions")}>
-                  My Auctions
+                  Manage my Auctions
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => router.push("/my-bids")}>
                   Bids
@@ -132,7 +132,7 @@ const Navbar = ({
                     variant={"ghost"}
                     onClick={() => router.push("/my-auctions")}
                   >
-                    My Auctions
+                    Manage my Auctions
                   </Button>
                 )}
 

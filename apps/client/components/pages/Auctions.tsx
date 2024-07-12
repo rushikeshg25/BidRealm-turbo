@@ -1,7 +1,4 @@
-import AuctionCard from "../AuctionCard";
 import AuctionCardComponent from "../AuctionCardComponent";
-import { Button } from "../ui/button";
-import Link from "next/link";
 
 type AuctionT = {
   id: string;
