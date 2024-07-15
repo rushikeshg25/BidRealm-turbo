@@ -155,26 +155,7 @@ const CreateAuction = ({ user }: { user: User }) => {
             </div>
             <div>
               <Label htmlFor='categories'>Categories</Label>
-              <Select
-                onValueChange={(value) => {
-                  setCategory(value.toUpperCase());
-                }}
-              >
-                <SelectTrigger className='w-full'>
-                  <SelectValue placeholder='Select category' />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value='Electronics'>Electronics</SelectItem>
-                    <SelectItem value='Collectables'>Collectables</SelectItem>
-                    <SelectItem value='Art'>Art</SelectItem>
-                    <SelectItem value='Fashion'>Fashion</SelectItem>
-                    <SelectItem value='Vechicles'>Vehicles</SelectItem>
-                    <SelectItem value='Watches'>Watches</SelectItem>
-                    <SelectItem value='Shoes'>Shoes</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+
               {errors.Categories && (
                 <p className='text-red-500'>{errors.Categories.message}</p>
               )}
