@@ -43,21 +43,3 @@ export const getAuctions = async ({
   const totalPages = Math.ceil(totalCount / limit);
   return { auctions, totalCount, totalPages };
 };
-
-// export const getPollbyTitle = async (auctionId: string) => {
-//   const { session } = await getAuth();
-//   if (!session) redirect("/sign-in");
-
-//   let poll;
-//   try {
-//     poll = await prisma.auction.findUnique({
-//       where: {
-//         id: auctionId,
-//       },
-//     });
-//   } catch (error) {
-//     console.log("error while fetching Poll:", error);
-//     return { success: false, message: "Something went wrong" };
-//   }
-//   return { success: true, message: "Poll Fetched", poll: poll };
-// };

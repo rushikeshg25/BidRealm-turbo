@@ -8,14 +8,6 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Auctionschema, AuctionT } from "@/types/auction";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-  SelectGroup,
-} from "../ui/select";
 import ImageUpload from "../ImageUpload";
 import DateTimePickerComponent from "../ui/DateTimePickerComponent";
 import { useRouter } from "next/navigation";
