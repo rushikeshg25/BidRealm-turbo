@@ -5,7 +5,7 @@ import prisma from "@repo/db";
 export const getAuctions = async ({
   search,
   offset = 0,
-  limit = 10,
+  limit = 10, //default limit
   min,
   max,
   status,
