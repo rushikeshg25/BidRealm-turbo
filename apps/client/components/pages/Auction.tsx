@@ -1,9 +1,9 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { User } from "lucia";
-import { useRouter } from "next/navigation";
-import date from "date-and-time";
-import { AuctionWithBidsWithUsersAndUserT, BidsWithUser } from "@repo/db/types";
+'use client';
+import React, { useEffect, useState } from 'react';
+import { User } from 'lucia';
+import { useRouter } from 'next/navigation';
+import date from 'date-and-time';
+import { AuctionWithBidsWithUsersAndUserT, BidsWithUser } from '@repo/db/types';
 import {
   Table,
   TableBody,
@@ -11,14 +11,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import BidDialog from "../BidDialog";
-import { Button } from "../ui/button";
-import AuctionTimer from "../AuctionTimer";
-import toast from "react-hot-toast";
-import { bidStore } from "@/zustand/bidStore";
+} from '@/components/ui/table';
+import BidDialog from '../BidDialog';
+import { Button } from '../ui/button';
+import AuctionTimer from '../AuctionTimer';
+import toast from 'react-hot-toast';
+import { bidStore } from '@/zustand/bidStore';
+import Image from 'next/image';
 
-const WS_URL = process.env.WS_URL ?? "ws://localhost:8080";
+const WS_URL = process.env.WS_URL ?? 'ws://localhost:8080';
 
 const Auction = ({
   user,
@@ -36,8 +37,8 @@ const Auction = ({
     initBids(auction.bids);
     if (!user) {
       setUserInfo({
-        id: "test",
-        email: "test@test.com",
+        id: 'test',
+        email: 'test@test.com',
       });
     }
   }, [user]);
@@ -48,12 +49,12 @@ const Auction = ({
     );
 
     ws.onopen = () => {
-      console.log("WebSocket connection opened");
+      console.log('WebSocket connection opened');
       setSocket(ws);
     };
 
     ws.onclose = () => {
-      console.log("WebSocket connection closed");
+      console.log('WebSocket connection closed');
       setSocket(null);
     };
 
@@ -73,13 +74,13 @@ const Auction = ({
     <div className='flex flex-col items-center justify-center h-full p-4 bg-background md:p-8'>
       <div className='grid w-full max-w-6xl grid-cols-1 gap-8 md:grid-cols-2'>
         <div className='flex flex-col gap-4'>
-          <div className='flex items-center justify-center border rounded-lg border--card dark:border--card dark:border'>
-            <img
+          <div className='flex items-center justify-center  rounded-lg'>
+            <Image
               src={auction.image}
               alt={auction.title}
               width={250}
               height={250}
-              className='object-cover p-2 rounded-lg'
+              className='object-cover p-3 rounded-lg border border--card dark:border--card'
             />
           </div>
           <div className='flex flex-col gap-1'>
@@ -108,18 +109,22 @@ const Auction = ({
                 />
               </span>
             </div>
-            {userInfo?.id !== "test" ? (
-              <BidDialog
-                handleModal={handleModal}
-                value={isModalOpen}
-                startPrice={auction.currentPrice}
-                currentPrice={auction.currentPrice}
-                auctionId={auction.id}
-                userId={userInfo?.id as string}
-                socket={socket}
-              />
+            {userInfo?.id !== 'test' ? (
+              bids[0]?.user.id === user?.id ? (
+                <Button disabled={true}>You hold the highest bid</Button>
+              ) : (
+                <BidDialog
+                  handleModal={handleModal}
+                  value={isModalOpen}
+                  startPrice={auction.currentPrice}
+                  currentPrice={auction.currentPrice}
+                  auctionId={auction.id}
+                  userId={userInfo?.id as string}
+                  socket={socket}
+                />
+              )
             ) : (
-              <Button onClick={() => router.push("/login")} className='w-full'>
+              <Button onClick={() => router.push('/login')} className='w-full'>
                 Login to Place a Bid
               </Button>
             )}
@@ -143,7 +148,7 @@ const Auction = ({
                     <TableCell>
                       {date.format(
                         new Date(bid.createdAt),
-                        "YYYY/MM/DD HH:mm:ss"
+                        'YYYY/MM/DD HH:mm:ss'
                       )}
                     </TableCell>
                     <TableCell className='text-right'>
