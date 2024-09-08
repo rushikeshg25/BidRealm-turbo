@@ -1,8 +1,8 @@
-"use client";
-import { User } from "lucia";
-import { useRouter } from "next/navigation";
-import React from "react";
-import { Button } from "@/components/ui/button";
+'use client';
+import { User } from 'lucia';
+import { useRouter } from 'next/navigation';
+import React from 'react';
+import { Button } from '@/components/ui/button';
 type AuctionT = {
   id: string;
   title: string;
@@ -17,6 +17,17 @@ type AuctionT = {
   userId: string;
   image: string;
   categories: string;
+};
+
+const formatMoney = (amount: number) => {
+  if (amount >= 100000 && amount < 10000000) {
+    return `${amount / 1000000}L`;
+  } else if (amount >= 10000 && amount < 100000) {
+    return `${amount / 1000}K`;
+  } else if (amount >= 10000000) {
+    return `${amount / 10000000}cr`;
+  }
+  return `${amount}`;
 };
 
 const AuctionCardComponent = ({
@@ -57,13 +68,23 @@ const AuctionCardComponent = ({
         </div>
         <h3 className='text-lg font-semibold mt-2'>{auction.title}</h3>
         <div className='flex items-center justify-between mt-2'>
-          <span className='text-base font-semibold'>$1,499 </span>
+          <span className='text-base font-semibold'>
+            ₹
+            {auction.status === 'ACTIVE'
+              ? formatMoney(auction.currentPrice)
+              : formatMoney(auction.startingPrice)}
+          </span>
           <Button
             className='dark:bg-card-foreground'
             size='sm'
             onClick={() => router.push(`/auction/${auction.id}`)}
+            disabled={auction.status !== 'ACTIVE'}
           >
-            Bid
+            {auction.status !== 'ACTIVE'
+              ? auction.status === 'INACTIVE'
+                ? 'Yet to Start'
+                : 'Sold Out'
+              : 'Bid'}
           </Button>
         </div>
       </div>
