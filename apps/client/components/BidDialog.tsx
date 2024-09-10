@@ -1,17 +1,12 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+'use client';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "./ui/input";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -19,7 +14,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { Input } from './ui/input';
 
 interface BidDialogProps {
   currentPrice: number;
@@ -45,9 +44,9 @@ const BidDialog = ({
       .string()
       .nonempty()
       .refine((val) => Number(val) > currentPrice && Number(val) > startPrice, {
-        message: "Amount must be more than current price",
+        message: 'Amount must be more than current price',
       }),
-    confirm: z.string().refine((val) => val === "BID", {
+    confirm: z.string().refine((val) => val === 'BID', {
       message: "Type 'BID' in Uppercase to confirm",
     }),
   });
@@ -56,9 +55,9 @@ const BidDialog = ({
   });
 
   const onSubmit = async (Formdata: z.infer<typeof dialogSchema>) => {
-    console.log("socket", socket);
+    console.log('socket', socket);
     socket?.send(
-      JSON.stringify({ type: "bid", amount: Number(Formdata.amount) })
+      JSON.stringify({ type: 'bid', amount: Number(Formdata.amount) })
     );
     form.reset();
     handleModal();
