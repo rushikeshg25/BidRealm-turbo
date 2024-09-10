@@ -55,7 +55,6 @@ const BidDialog = ({
   });
 
   const onSubmit = async (Formdata: z.infer<typeof dialogSchema>) => {
-    console.log('socket', socket);
     socket?.send(
       JSON.stringify({ type: 'bid', amount: Number(Formdata.amount) })
     );

@@ -19,7 +19,6 @@ const AuctionTimer = ({
     if (socket) {
       socket.onmessage = (event) => {
         if (JSON.parse(event.data).type !== 'TIME_LEFT') {
-          console.log(' here');
         }
         const message = JSON.parse(event.data);
         if (message.type === 'TIME_LEFT') {

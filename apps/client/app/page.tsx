@@ -29,7 +29,6 @@ export default async function Page({
     limit,
     search,
   });
-  console.log(searchParams);
   return (
     <div className='flex-1 grid grid-cols-1 md:grid-cols-[240px_1fr] gap-8 p-5 dark:bg-background'>
       <Filters />

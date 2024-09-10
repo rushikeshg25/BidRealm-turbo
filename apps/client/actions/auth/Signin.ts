@@ -17,7 +17,6 @@ const Signin = async (formData: signInSchemaT) => {
     if (!user) {
       throw new Error('User not found with Entered email');
     }
-    console.log(formData.password, user.hashedPassword);
     const validPassword = await argon2.verify(
       user.hashedPassword,
       formData.password
