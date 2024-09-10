@@ -31,9 +31,7 @@ const SignIn = () => {
   });
 
   const onSubmit = async (Formdata: signInSchemaT) => {
-    console.log('123');
     try {
-      console.log('first');
       await server_Signin(Formdata);
     } catch (error) {
       toast.error('Error signing up. Try again!');
