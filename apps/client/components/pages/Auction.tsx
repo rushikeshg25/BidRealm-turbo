@@ -109,7 +109,9 @@ const Auction = ({
                 />
               </span>
             </div>
-            {userInfo?.id !== 'test' ? (
+            {user?.id == auction.userId ? (
+              <Button disabled={true}>This Auction is Listed by You!</Button>
+            ) : userInfo?.id !== 'test' ? (
               bids[0]?.user.id === user?.id ? (
                 <Button disabled={true}>You hold the highest bid</Button>
               ) : (
@@ -124,7 +126,10 @@ const Auction = ({
                 />
               )
             ) : (
-              <Button onClick={() => router.push('/login')} className='w-full'>
+              <Button
+                onClick={() => router.push('/sign-in')}
+                className='w-full'
+              >
                 Login to Place a Bid
               </Button>
             )}
