@@ -1,15 +1,15 @@
-"use server";
-import { AuctionT } from "@/types/auction";
-import prisma from "@repo/db";
+'use server';
+import { AuctionT } from '@/types/auction';
+import prisma from '@repo/db';
 
 type Categories =
-  | "ART"
-  | "COLLECTABLES"
-  | "ELECTRONICS"
-  | "VEHICLES"
-  | "WATCHES"
-  | "FASHION"
-  | "SHOES";
+  | 'ART'
+  | 'COLLECTABLES'
+  | 'ELECTRONICS'
+  | 'VEHICLES'
+  | 'WATCHES'
+  | 'FASHION'
+  | 'SHOES';
 
 export const createAuction = async (
   data: AuctionT,
@@ -27,7 +27,7 @@ export const createAuction = async (
         currentPrice: 0,
         startingPrice: data.startingPrice,
         image: imgUrl,
-        status: "INACTIVE",
+        status: 'INACTIVE',
         userId: userId,
       },
     });

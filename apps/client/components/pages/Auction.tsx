@@ -1,9 +1,4 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { User } from 'lucia';
-import { useRouter } from 'next/navigation';
-import date from 'date-and-time';
-import { AuctionWithBidsWithUsersAndUserT, BidsWithUser } from '@repo/db/types';
 import {
   Table,
   TableBody,
@@ -12,12 +7,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { bidStore } from '@/zustand/bidStore';
+import { AuctionWithBidsWithUsersAndUserT } from '@repo/db/types';
+import date from 'date-and-time';
+import { User } from 'lucia';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import AuctionTimer from '../AuctionTimer';
 import BidDialog from '../BidDialog';
 import { Button } from '../ui/button';
-import AuctionTimer from '../AuctionTimer';
-import toast from 'react-hot-toast';
-import { bidStore } from '@/zustand/bidStore';
-import Image from 'next/image';
 
 const WS_URL = process.env.WS_URL ?? 'ws://localhost:8080';
 

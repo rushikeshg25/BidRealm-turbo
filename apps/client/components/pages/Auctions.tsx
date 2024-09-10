@@ -1,4 +1,4 @@
-import AuctionCardComponent from "../AuctionCardComponent";
+import AuctionCardComponent from '../AuctionCardComponent';
 
 type AuctionT = {
   id: string;

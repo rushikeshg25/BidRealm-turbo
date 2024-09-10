@@ -1,8 +1,7 @@
-"use client";
-import { bidStore } from "@/zustand/bidStore";
-import { CloudCog } from "lucide-react";
-import React, { useEffect, useState, useRef } from "react";
-import toast from "react-hot-toast";
+'use client';
+import { bidStore } from '@/zustand/bidStore';
+import { useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 
 const AuctionTimer = ({
   auctionId,
@@ -19,30 +18,29 @@ const AuctionTimer = ({
   useEffect(() => {
     if (socket) {
       socket.onmessage = (event) => {
-        if (JSON.parse(event.data).type !== "TIME_LEFT") {
-          console.log(" here");
+        if (JSON.parse(event.data).type !== 'TIME_LEFT') {
+          console.log(' here');
         }
         const message = JSON.parse(event.data);
-        if (message.type === "TIME_LEFT") {
+        if (message.type === 'TIME_LEFT') {
           setTimeLeft(message.timeLeft);
         }
-        if (message.type === "BID") {
-          console.log(" reqs");
+        if (message.type === 'BID') {
           setCurrentAmount(message.bid.amount);
           addBid(message.bid);
           toast(`${message.bid.user.userName} bid ₹${message.bid.amount} `, {
-            icon: "🟢",
+            icon: '🟢',
           });
         }
       };
 
       socket.onclose = () => {
-        console.log("WebSocket connection closed");
+        console.log('WebSocket connection closed');
       };
 
       socket.onerror = (error) => {
-        toast.error("Error connecting to server. Please refresh the page.");
-        console.error("WebSocket error", error);
+        toast.error('Error connecting to server. Please refresh the page.');
+        console.error('WebSocket error', error);
       };
 
       return () => {

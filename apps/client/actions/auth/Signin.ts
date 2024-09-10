@@ -1,11 +1,11 @@
-"use server";
+'use server';
 
-import prisma from "@repo/db";
-import { lucia } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
-import * as argon2 from "argon2";
-import { signInSchemaT } from "@/types/auth";
+import { lucia } from '@/lib/auth';
+import { signInSchemaT } from '@/types/auth';
+import prisma from '@repo/db';
+import * as argon2 from 'argon2';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 const Signin = async (formData: signInSchemaT) => {
   try {
@@ -15,7 +15,7 @@ const Signin = async (formData: signInSchemaT) => {
       },
     });
     if (!user) {
-      throw new Error("User not found with Entered email");
+      throw new Error('User not found with Entered email');
     }
     console.log(formData.password, user.hashedPassword);
     const validPassword = await argon2.verify(
@@ -23,7 +23,7 @@ const Signin = async (formData: signInSchemaT) => {
       formData.password
     );
     if (!validPassword) {
-      throw new Error("Invalid password");
+      throw new Error('Invalid password');
     }
     const session = await lucia.createSession(user.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
@@ -32,9 +32,9 @@ const Signin = async (formData: signInSchemaT) => {
       sessionCookie.value,
       sessionCookie.attributes
     );
-    redirect("/");
+    redirect('/');
   } catch (error) {
-    console.error("Error during sign in:", error);
+    console.error('Error during sign in:', error);
     throw error;
   }
 };

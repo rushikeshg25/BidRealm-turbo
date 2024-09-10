@@ -1,7 +1,7 @@
-import MyBiddings from "@/components/pages/MyBids";
-import { redirect } from "next/navigation";
-import { getAuth } from "@/lib/auth";
-import prisma from "@repo/db";
+import MyBiddings from '@/components/pages/MyBids';
+import { getAuth } from '@/lib/auth';
+import prisma from '@repo/db';
+import { redirect } from 'next/navigation';
 
 type bidsT = {
   id: string;
@@ -23,19 +23,19 @@ export default async function Page({
 }) {
   const { session, user } = await getAuth();
   if (!session) {
-    redirect("/sign-in");
+    redirect('/sign-in');
   }
 
   let bids: any;
 
-  if (searchParams?.sortBy === "title") {
+  if (searchParams?.sortBy === 'title') {
     bids = await prisma.bid.findMany({
       where: {
         userId: user.id,
       },
       orderBy: {
         auction: {
-          title: "asc",
+          title: 'asc',
         },
       },
       include: {
@@ -53,7 +53,7 @@ export default async function Page({
       },
       orderBy: {
         auction: {
-          createdAt: "desc",
+          createdAt: 'desc',
         },
       },
       include: {

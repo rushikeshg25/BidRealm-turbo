@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
-import { Auctionschema, AuctionT } from "@/types/auction";
-import ImageUpload from "../ImageUpload";
-import DateTimePickerComponent from "../ui/DateTimePickerComponent";
-import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
-import { createAuction } from "@/actions/CreateAuction";
-import { User } from "lucia";
-import toast from "react-hot-toast";
+import { createAuction } from '@/actions/CreateAuction';
+import { Auctionschema, AuctionT } from '@/types/auction';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { User } from 'lucia';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import ImageUpload from '../ImageUpload';
+import { Button } from '../ui/button';
+import DateTimePickerComponent from '../ui/DateTimePickerComponent';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { Textarea } from '../ui/textarea';
 
 export enum Categories {
   ART,
@@ -28,17 +28,17 @@ export enum Categories {
 
 const CreateAuction = ({ user }: { user: User }) => {
   const router = useRouter();
-  const [category, setCategory] = useState<any>("");
+  const [category, setCategory] = useState<any>('');
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
-  const [imgUrl, setImgUrl] = useState<string>("");
+  const [imgUrl, setImgUrl] = useState<string>('');
   const [data, setData] = useState<AuctionT>({
-    title: "",
-    description: "",
+    title: '',
+    description: '',
     startingPrice: 0,
     startDate: new Date(),
     endDate: new Date(),
-    Categories: "",
+    Categories: '',
   });
   const {
     register,
@@ -54,8 +54,8 @@ const CreateAuction = ({ user }: { user: User }) => {
       return await createAuction(data, imgUrl, user?.id as string);
     },
     onSuccess: (data) => {
-      toast.success("Auction created successfully!");
-      router.push("/my-auctions");
+      toast.success('Auction created successfully!');
+      router.push('/my-auctions');
     },
     onError: (error) => {
       toast.error("We couldn't create your auction. Please try again.");
@@ -67,24 +67,24 @@ const CreateAuction = ({ user }: { user: User }) => {
 
   const startDateHandler = (date: Date) => {
     setStartDate(date);
-    setValue("startDate", date);
+    setValue('startDate', date);
   };
   const endDateHandler = (date: Date) => {
     setEndDate(date);
-    setValue("endDate", date);
+    setValue('endDate', date);
   };
   const ImageURL = (url: string) => {
     setImgUrl(url);
   };
 
   useEffect(() => {
-    setValue("startDate", startDate);
+    setValue('startDate', startDate);
   }, [startDate]);
   useEffect(() => {
-    setValue("endDate", endDate);
+    setValue('endDate', endDate);
   }, [endDate]);
   useEffect(() => {
-    setValue("Categories", category);
+    setValue('Categories', category);
   }, [category]);
 
   const onSubmit = async (data: AuctionT) => {
@@ -99,7 +99,7 @@ const CreateAuction = ({ user }: { user: User }) => {
           <div className='grid gap-4'>
             <div>
               <Label htmlFor='title'>Title</Label>
-              <Input {...register("title")} placeholder='Enter auction title' />
+              <Input {...register('title')} placeholder='Enter auction title' />
               {errors.title && (
                 <p className='text-red-500'>{errors.title.message}</p>
               )}
@@ -108,7 +108,7 @@ const CreateAuction = ({ user }: { user: User }) => {
               <Label htmlFor='description'>Description</Label>
               <Textarea
                 id='description'
-                {...register("description")}
+                {...register('description')}
                 placeholder='Enter auction description'
               />
               {errors.description && (
@@ -121,7 +121,7 @@ const CreateAuction = ({ user }: { user: User }) => {
                 type='number'
                 id='startingPrice'
                 onChange={(e) => {
-                  setValue("startingPrice", Number(e.target.value));
+                  setValue('startingPrice', Number(e.target.value));
                 }}
                 placeholder='Enter starting Bid price'
               />

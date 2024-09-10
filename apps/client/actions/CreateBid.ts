@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import prisma from "@repo/db";
+import prisma from '@repo/db';
 
 export const createBid = async (
   auctionId: string,

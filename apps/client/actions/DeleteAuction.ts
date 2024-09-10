@@ -1,6 +1,6 @@
-"use server";
-import prisma from "@repo/db";
-import { revalidatePath } from "next/cache";
+'use server';
+import prisma from '@repo/db';
+import { revalidatePath } from 'next/cache';
 
 export const deleteAuction = async (id: string) => {
   try {
@@ -10,17 +10,17 @@ export const deleteAuction = async (id: string) => {
       },
     });
     if (!auction) {
-      throw new Error("Auction not found");
+      throw new Error('Auction not found');
     }
-    if (auction.status !== "INACTIVE") {
-      throw new Error("Auction is not in draft status");
+    if (auction.status !== 'INACTIVE') {
+      throw new Error('Auction is not in draft status');
     }
     await prisma.auction.delete({
       where: {
         id: id,
       },
     });
-    revalidatePath("/my-auctions");
+    revalidatePath('/my-auctions');
   } catch (error) {
     throw error;
   }

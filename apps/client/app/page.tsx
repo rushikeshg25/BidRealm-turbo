@@ -1,7 +1,7 @@
-import PaginationWrapper from "@/components/PaginationWrapper";
-import { getAuctions } from "@/actions/GetAuctions";
-import Filters from "@/components/Filters";
-import Auctions from "@/components/pages/Auctions";
+import { getAuctions } from '@/actions/GetAuctions';
+import Filters from '@/components/Filters';
+import Auctions from '@/components/pages/Auctions';
+import PaginationWrapper from '@/components/PaginationWrapper';
 
 export default async function Page({
   searchParams,
@@ -16,12 +16,12 @@ export default async function Page({
     categories?: string[];
   };
 }) {
-  const search = searchParams?.query || "";
+  const search = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
   const limit = Number(searchParams?.limit) || 6;
   const offset = (currentPage - 1) * limit;
-  const min = searchParams?.min || "";
-  const max = searchParams?.max || "";
+  const min = searchParams?.min || '';
+  const max = searchParams?.max || '';
   const status = searchParams?.s || [];
   const categories = searchParams?.categories || [];
   const { auctions, totalPages } = await getAuctions({

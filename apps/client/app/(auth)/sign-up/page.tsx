@@ -1,16 +1,15 @@
-"use client";
-import React, { use } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { signUpSchema, signUpSchemaT } from "@/types/auth";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { Label } from "@/components/ui/label";
-import toast from "react-hot-toast";
-import { useMutation } from "@tanstack/react-query";
-import { signUp } from "@/actions/auth/Signup";
+'use client';
+import { signUp } from '@/actions/auth/Signup';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { signUpSchema, signUpSchemaT } from '@/types/auth';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { z } from 'zod';
 
 const SignUp = () => {
   const {
@@ -24,7 +23,7 @@ const SignUp = () => {
   const { mutate: server_Signup } = useMutation({
     mutationFn: signUp,
     onSuccess: () => {
-      toast.success("Signup successful");
+      toast.success('Signup successful');
     },
     onError: (error) => {
       toast.error(error.message);
@@ -36,7 +35,7 @@ const SignUp = () => {
       await server_Signup(Formdata);
     } catch (error) {
       console.log(error);
-      toast.error("Error signing up. Try again!");
+      toast.error('Error signing up. Try again!');
     }
   };
 
@@ -60,7 +59,7 @@ const SignUp = () => {
               type='text'
               placeholder='Enter your username'
               className='w-full px-4 py-2 rounded-md bg-muted dark:bg-card dark:text-primary'
-              {...register("userName")}
+              {...register('userName')}
             />
             <div className='min-h-[20px]'>
               {errors.userName && (
@@ -78,7 +77,7 @@ const SignUp = () => {
               type='email'
               placeholder='Enter your email'
               className='w-full px-4 py-2 rounded-md bg-muted dark:bg-card dark:text-primary'
-              {...register("email")}
+              {...register('email')}
             />
             <div className='min-h-[20px]'>
               {errors.email && (
@@ -94,7 +93,7 @@ const SignUp = () => {
               type='password'
               placeholder='Enter your password'
               className='w-full px-4 py-2 rounded-md bg-muted dark:bg-card dark:text-primary'
-              {...register("password")}
+              {...register('password')}
             />
             <div className='min-h-[20px]'>
               {errors.password && (
@@ -112,7 +111,7 @@ const SignUp = () => {
               type='password'
               placeholder='Confirm your password'
               className='w-full px-4 py-2 rounded-md bg-muted dark:bg-card dark:text-primary'
-              {...register("confirmPassword")}
+              {...register('confirmPassword')}
             />
             <div className='min-h-[20px]'>
               {errors.confirmPassword && (
@@ -131,7 +130,7 @@ const SignUp = () => {
           </Button>
         </form>
         <div className='text-center text-muted-foreground'>
-          Already have an account?{" "}
+          Already have an account?{' '}
           <Link
             href='/sign-in'
             className='text-primary dark:text-foreground hover:underline'

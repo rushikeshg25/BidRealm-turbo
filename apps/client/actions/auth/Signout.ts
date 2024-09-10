@@ -1,14 +1,13 @@
-"use server";
+'use server';
 
-import { redirect } from "next/navigation";
-import { getAuth } from "@/lib/auth";
-import { lucia } from "@/lib/auth";
-import { cookies } from "next/headers";
+import { getAuth, lucia } from '@/lib/auth';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 const Signout = async () => {
   const { session } = await getAuth();
 
-  if (!session) redirect("/sign-in");
+  if (!session) redirect('/sign-in');
 
   await lucia.invalidateSession(session?.id);
   const sessionCookie = lucia.createBlankSessionCookie();

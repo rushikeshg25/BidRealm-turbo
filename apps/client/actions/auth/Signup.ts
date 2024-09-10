@@ -1,11 +1,11 @@
-"use server";
-import { generateId } from "lucia";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import * as argon2 from "argon2";
-import { lucia } from "@/lib/auth";
-import prisma from "@repo/db";
-import { signUpSchemaT } from "@/types/auth";
+'use server';
+import { lucia } from '@/lib/auth';
+import { signUpSchemaT } from '@/types/auth';
+import prisma from '@repo/db';
+import * as argon2 from 'argon2';
+import { generateId } from 'lucia';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 const signUp = async (Formdata: signUpSchemaT) => {
   try {
@@ -15,12 +15,12 @@ const signUp = async (Formdata: signUpSchemaT) => {
     if (
       await prisma.user.findUnique({ where: { userName: Formdata.userName } })
     ) {
-      console.log("username already exists");
-      throw new Error("Username already exists");
+      console.log('username already exists');
+      throw new Error('Username already exists');
     }
     if (await prisma.user.findUnique({ where: { email: Formdata.email } })) {
-      console.log("email already exists");
-      throw new Error("Email already exists");
+      console.log('email already exists');
+      throw new Error('Email already exists');
     }
     await prisma.user.create({
       data: {
@@ -39,10 +39,10 @@ const signUp = async (Formdata: signUpSchemaT) => {
       sessionCookie.attributes
     );
   } catch (error) {
-    console.error("Error during sign up:", error);
+    console.error('Error during sign up:', error);
     throw error;
   }
-  redirect("/");
+  redirect('/');
 };
 
 export { signUp };

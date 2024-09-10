@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import prisma from "@repo/db";
+import prisma from '@repo/db';
 
 export const getAuctions = async ({
   search,
@@ -23,12 +23,12 @@ export const getAuctions = async ({
     where: {
       title: {
         contains: search,
-        mode: "insensitive",
+        mode: 'insensitive',
       },
       // categories: "vehicles",
     },
     orderBy: {
-      createdAt: "desc",
+      createdAt: 'desc',
     },
     skip: offset,
     take: limit,

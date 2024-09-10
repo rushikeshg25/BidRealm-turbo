@@ -1,9 +1,8 @@
-import Auction from "@/components/pages/Auction";
-import { getAuth } from "@/lib/auth";
-import prisma from "@repo/db";
-import React from "react";
-import { AuctionWithBidsWithUsersAndUserT } from "@repo/db/types";
-import Link from "next/link";
+import Auction from '@/components/pages/Auction';
+import { getAuth } from '@/lib/auth';
+import prisma from '@repo/db';
+import { AuctionWithBidsWithUsersAndUserT } from '@repo/db/types';
+import Link from 'next/link';
 
 const page = async ({ params }: { params: { id: string } }) => {
   const { user } = await getAuth();
@@ -17,7 +16,7 @@ const page = async ({ params }: { params: { id: string } }) => {
           user: true,
         },
         orderBy: {
-          createdAt: "desc",
+          createdAt: 'desc',
         },
       },
       user: true,
@@ -27,11 +26,11 @@ const page = async ({ params }: { params: { id: string } }) => {
   if (!auction)
     return (
       <div className='flex flex-col items-center justify-center text-lg'>
-        Auction not found!{" "}
+        Auction not found!{' '}
         <div>
-          Return to{" "}
-          <Link href={"/"} className='underline underline-offset-2'>
-            Home Page{" "}
+          Return to{' '}
+          <Link href={'/'} className='underline underline-offset-2'>
+            Home Page{' '}
           </Link>
         </div>
       </div>
