@@ -1,13 +1,13 @@
-"use client";
-import React from "react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import GavelIcon from "./icons/GavelIcon";
-import UserIcon from "./icons/UserIcon";
-import { ModeToggle } from "./ThemeToggle";
-import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import { cn } from "@/lib/utils";
-import { Menu } from "lucide-react";
+'use client';
+import React from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+import GavelIcon from './icons/GavelIcon';
+import UserIcon from './icons/UserIcon';
+import { ModeToggle } from './ThemeToggle';
+import { GitHubLogoIcon } from '@radix-ui/react-icons';
+import { cn } from '@/lib/utils';
+import { Menu } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,13 +15,13 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Session } from "lucia";
-import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
-import Signout from "@/actions/auth/Signout";
-import Search from "./Search";
+} from '@/components/ui/dropdown-menu';
+import { Session } from 'lucia';
+import { Button } from './ui/button';
+import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
+import Signout from '@/actions/auth/Signout';
+import Search from './Search';
 import {
   Sheet,
   SheetClose,
@@ -29,7 +29,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "./ui/sheet";
+} from './ui/sheet';
 
 const Navbar = ({
   className,
@@ -44,24 +44,24 @@ const Navbar = ({
   const { mutate: server_Signout } = useMutation({
     mutationFn: Signout,
     onSuccess: () => {
-      router.push("/");
+      router.push('/');
     },
   });
   const LoginHandler = () => {
-    router.push("/sign-up");
+    router.push('/sign-up');
   };
   const LogoutHandler = () => {
     server_Signout();
   };
   return (
     <header
-      className={cn(" py-4 px-10 flex items-center justify-between", className)}
+      className={cn(' py-4 px-10 flex items-center justify-between', className)}
     >
       <Link href='/' className='flex items-center gap-2' prefetch={false}>
         <GavelIcon className='w-6 h-6' />
         <span className='text-xl font-bold hidden md:block'>BidRealm</span>
       </Link>
-      {pathname === "/" && (
+      {pathname === '/' && (
         <div className='flex-1 max-w-md mx-6'>
           <div className='relative'>
             <Search />
@@ -72,7 +72,7 @@ const Navbar = ({
       <div className='hidden md:flex items-center gap-4'>
         {session !== null && (
           <Link
-            href={"/new"}
+            href={'/new'}
             className='bg-black text-white px-4 py-2 rounded-lg hover:cursor:pointer dark:bg-white dark:text-black hidden md:block'
           >
             New Auction
@@ -80,7 +80,7 @@ const Navbar = ({
         )}
         <ModeToggle />
         {!session ? (
-          <Button onClick={() => router.push("/sign-up")}>Sign Up</Button>
+          <Button onClick={() => router.push('/sign-up')}>Sign Up</Button>
         ) : (
           <>
             <DropdownMenu>
@@ -92,10 +92,10 @@ const Navbar = ({
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => router.push("/my-auctions")}>
+                <DropdownMenuItem onClick={() => router.push('/my-auctions')}>
                   Manage my Auctions
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => router.push("/my-bids")}>
+                <DropdownMenuItem onClick={() => router.push('/my-bids')}>
                   Bids
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -123,14 +123,14 @@ const Navbar = ({
             <SheetClose asChild className='h-full pt-10'>
               <div className='flex flex-col items-center justify-center gap-y-2'>
                 {session !== null && (
-                  <Button variant={"ghost"} onClick={() => router.push("/new")}>
+                  <Button variant={'ghost'} onClick={() => router.push('/new')}>
                     New Auction
                   </Button>
                 )}
                 {session !== null && (
                   <Button
-                    variant={"ghost"}
-                    onClick={() => router.push("/my-auctions")}
+                    variant={'ghost'}
+                    onClick={() => router.push('/my-auctions')}
                   >
                     Manage my Auctions
                   </Button>
@@ -138,25 +138,25 @@ const Navbar = ({
 
                 {session !== null && (
                   <Button
-                    variant={"ghost"}
-                    onClick={() => router.push("/my-bids")}
+                    variant={'ghost'}
+                    onClick={() => router.push('/my-bids')}
                   >
                     Bids
                   </Button>
                 )}
 
                 {session !== null ? (
-                  <Button variant={"ghost"} onClick={LogoutHandler}>
+                  <Button variant={'ghost'} onClick={LogoutHandler}>
                     Logout
                   </Button>
                 ) : (
-                  <Button variant={"ghost"} onClick={LoginHandler}>
+                  <Button variant={'ghost'} onClick={LoginHandler}>
                     SignUp
                   </Button>
                 )}
                 <div className='flex-grow'></div>
                 <div className='flex items-center gap-2 mb-9'>
-                  <Link href={"https://github.com/rushikeshg25/bid-turbo"}>
+                  <Link href={'https://github.com/rushikeshg25/bid-turbo'}>
                     <Button variant='outline'>
                       <GitHubLogoIcon className='w-5 h-5 mr-2' />
                       Github
