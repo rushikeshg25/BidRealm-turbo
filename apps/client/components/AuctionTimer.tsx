@@ -65,7 +65,7 @@ const AuctionTimer = ({
     }
   }, [timeLeft]);
 
-  const formatTime = (milliseconds: any) => {
+  const formatTime = (milliseconds: number) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -88,7 +88,9 @@ const AuctionTimer = ({
     <div>
       {timeLeft !== null ? (
         timeLeft > 0 ? (
-          <div>{formatTime(timeLeft)}</div>
+          <>
+            <div>{formatTime(timeLeft)}</div>
+          </>
         ) : (
           <div>Ended</div>
         )

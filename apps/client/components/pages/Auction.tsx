@@ -73,13 +73,13 @@ const Auction = ({
     <div className='flex flex-col items-center justify-center h-full p-4 bg-background md:p-8'>
       <div className='grid w-full max-w-6xl grid-cols-1 gap-8 md:grid-cols-2'>
         <div className='flex flex-col gap-4'>
-          <div className='flex items-center justify-center  rounded-lg'>
+          <div className='flex items-center justify-center  rounded-lg relative w-full h-full  border border--card dark:border--card'>
             <Image
               src={auction.image}
               alt={auction.title}
               width={250}
               height={250}
-              className='object-cover p-3 rounded-lg border border--card dark:border--card'
+              className='object-cover p-3 '
             />
           </div>
           <div className='flex flex-col gap-1'>
@@ -99,7 +99,7 @@ const Auction = ({
               </span>
             </div>
             <div className='flex items-center justify-between'>
-              <span className='text-lg font-semibold'>Time Remaining</span>
+              <span className='text-lg font-semibold'>Time Left</span>
               <span className='text-2xl font-bold text-primary'>
                 <AuctionTimer
                   auctionId={auction.id}
