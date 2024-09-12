@@ -1,6 +1,13 @@
 'use client';
 
 import { createAuction } from '@/actions/CreateAuction';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Auctionschema, AuctionT } from '@/types/auction';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -25,10 +32,19 @@ export enum Categories {
   FASHION,
   SHOES,
 }
+const CategoriesArray = [
+  'Art',
+  'Collectables',
+  'Electronics',
+  'Vehicles',
+  'Watches',
+  'Fashion',
+  'Shoes',
+];
 
 const CreateAuction = ({ user }: { user: User }) => {
   const router = useRouter();
-  const [category, setCategory] = useState<any>('');
+  const [category, setCategory] = useState<string>('');
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
   const [imgUrl, setImgUrl] = useState<string>('');
@@ -84,6 +100,7 @@ const CreateAuction = ({ user }: { user: User }) => {
     setValue('endDate', endDate);
   }, [endDate]);
   useEffect(() => {
+    console.log(category);
     setValue('Categories', category);
   }, [category]);
 
@@ -92,8 +109,10 @@ const CreateAuction = ({ user }: { user: User }) => {
     await server_createAuction();
   };
   return (
-    <div className='max-w-4xl px-4 py-5 mx-auto mt-10 sm:px-6 lg:px-8 dark:border border rounded-lg'>
-      <h1 className='mb-6 text-3xl font-bold'>Create New Auction</h1>
+    <div className='max-w-4xl px-4 py-5 mx-auto mt-10 sm:px-6 lg:px-8 dark:border border rounded-lg mb-10'>
+      <h1 className='mb-6 text-3xl font-bold flex items-center justify-center'>
+        <>Create New Auction</>
+      </h1>
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
         <div className='grid grid-cols-1 gap-6 md:grid-cols-2 w-full'>
           <div className='grid gap-4'>
@@ -131,7 +150,7 @@ const CreateAuction = ({ user }: { user: User }) => {
             </div>
             <div className='grid grid-cols-1 gap-4'>
               <div>
-                <Label htmlFor='start-date'>Start Date &Time</Label>
+                <Label htmlFor='start-date'>Start Date & Time</Label>
                 <DateTimePickerComponent Datehandler={startDateHandler} />
                 {errors.startDate && (
                   <p className='text-red-500'>{errors.startDate.message}</p>
@@ -145,9 +164,18 @@ const CreateAuction = ({ user }: { user: User }) => {
                 )}
               </div>
             </div>
-            <div>
-              <Label htmlFor='categories'>Categories</Label>
-
+            <div className='w-full flex flex-row items-center justify-between'>
+              <Label htmlFor='categories'>Select Category</Label>
+              <Select onValueChange={(value) => setCategory(value)}>
+                <SelectTrigger className='w-[180px]'>
+                  <SelectValue placeholder='Category' />
+                </SelectTrigger>
+                <SelectContent className='w-full'>
+                  {CategoriesArray.map((category) => (
+                    <SelectItem value={category}>{category}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               {errors.Categories && (
                 <p className='text-red-500'>{errors.Categories.message}</p>
               )}
@@ -159,8 +187,10 @@ const CreateAuction = ({ user }: { user: User }) => {
             </div>
           </div>
         </div>
-        <div className='flex justify-center'>
-          <Button type='submit'>Publish</Button>
+        <div className='flex justify-center w-full mt-3'>
+          <Button type='submit' className='w-1/3'>
+            Publish
+          </Button>
         </div>
       </form>
     </div>

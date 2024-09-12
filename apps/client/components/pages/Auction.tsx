@@ -133,7 +133,7 @@ const Auction = ({
               </Button>
             )}
           </div>
-          <div className='flex flex-col gap-4 p-6 rounded-lg bg-card'>
+          <div className='flex flex-col gap-4 p-6 rounded-lg bg-card '>
             <h2 className='text-xl font-bold'>Bid History</h2>
             <Table containerClassname='h-fit max-h-80 overflow-y-auto relative dark:border--card rounded-xl border border--card dark:border'>
               <TableHeader>
