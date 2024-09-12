@@ -1,6 +1,7 @@
 'use server';
 import { AuctionT } from '@/types/auction';
 import prisma from '@repo/db';
+import { revalidatePath } from 'next/cache';
 
 type Categories =
   | 'ART'
@@ -37,3 +38,4 @@ export const createAuction = async (
 
   return {};
 };
+revalidatePath('/my-auctions');

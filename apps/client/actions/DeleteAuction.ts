@@ -4,6 +4,11 @@ import { revalidatePath } from 'next/cache';
 
 export const deleteAuction = async (id: string) => {
   try {
+    const removeBids = await prisma.bid.deleteMany({
+      where: {
+        auctionId: id,
+      },
+    });
     const auction = await prisma.auction.findUnique({
       where: {
         id: id,
