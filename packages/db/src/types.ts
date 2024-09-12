@@ -1,6 +1,6 @@
-import { Bid, Auction, AuctionStatus, User, Prisma } from "@prisma/client";
+import { Bid, Auction, AuctionStatus, User, Prisma } from '@prisma/client';
 
-import prisma from "./index";
+import prisma from './index';
 
 export type BidT = Bid;
 export type AuctionT = Auction;

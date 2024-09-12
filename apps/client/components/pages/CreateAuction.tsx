@@ -77,9 +77,6 @@ const CreateAuction = ({ user }: { user: User }) => {
       toast.error("We couldn't create your auction. Please try again.");
     },
   });
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   const startDateHandler = (date: Date) => {
     setStartDate(date);
@@ -100,7 +97,6 @@ const CreateAuction = ({ user }: { user: User }) => {
     setValue('endDate', endDate);
   }, [endDate]);
   useEffect(() => {
-    console.log(category);
     setValue('Categories', category);
   }, [category]);
 
