@@ -1,20 +1,20 @@
-"use client";
-import { User } from "lucia";
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Ellipsis } from "lucide-react";
-import date from "date-and-time";
-import { useRouter, usePathname, useSearchParams } from "next/navigation";
-import { mkConfig, generateCsv, download } from "export-to-csv";
-import { formatMoney } from "@/utils/format";
+'use client';
+import { User } from 'lucia';
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Ellipsis } from 'lucide-react';
+import date from 'date-and-time';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { mkConfig, generateCsv, download } from 'export-to-csv';
+import { formatMoney } from '@/utils/format';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Card, CardContent } from "@/components/ui/card";
+} from '@/components/ui/dropdown-menu';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Card, CardContent } from '@/components/ui/card';
 import {
   Table,
   TableHeader,
@@ -22,14 +22,14 @@ import {
   TableHead,
   TableBody,
   TableCell,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
-import { AuctionWithBidsT } from "@repo/db/types";
-import Search from "../Search";
-import toast from "react-hot-toast";
-import { useMutation } from "@tanstack/react-query";
-import { deleteAuction } from "@/actions/DeleteAuction";
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import Link from 'next/link';
+import { AuctionWithBidsT } from '@repo/db/types';
+import Search from '../Search';
+import toast from 'react-hot-toast';
+import { useMutation } from '@tanstack/react-query';
+import { deleteAuction } from '@/actions/DeleteAuction';
 
 const MyAuctions = ({
   user,
@@ -48,10 +48,10 @@ const MyAuctions = ({
   const { mutate: server_deleteAuction } = useMutation({
     mutationFn: deleteAuction,
     onSuccess: () => {
-      toast.success("Auction deleted successfully");
+      toast.success('Auction deleted successfully');
     },
     onError: (error) => {
-      toast.error("Error deleting auction");
+      toast.error('Error deleting auction');
     },
   });
 
@@ -88,7 +88,7 @@ const MyAuctions = ({
                   <Button
                     size='sm'
                     className='h-8 gap-1'
-                    onClick={() => router.push("/new")}
+                    onClick={() => router.push('/new')}
                   >
                     <CirclePlusIcon className='h-3.5 w-3.5' />
                     <span className='sr-only sm:not-sr-only sm:whitespace-nowrap'>
@@ -126,7 +126,7 @@ const MyAuctions = ({
                         <TableBody>
                           <TableRow>
                             <TableCell colSpan={6}>
-                              No auctions.{" "}
+                              No auctions.{' '}
                               <Link
                                 href='/new'
                                 className='underline underline-offset-2'
@@ -134,7 +134,7 @@ const MyAuctions = ({
                                 Create one
                               </Link>
                             </TableCell>
-                          </TableRow>{" "}
+                          </TableRow>{' '}
                         </TableBody>
                       ) : (
                         <TableBody>
@@ -162,9 +162,7 @@ const MyAuctions = ({
                               <TableCell className='font-medium'>
                                 {auction.title}
                               </TableCell>
-                              <TableCell>
-                                <Badge variant='outline'>Draft</Badge>
-                              </TableCell>
+
                               <TableCell className='hidden md:table-cell'>
                                 ₹
                                 {auction.currentPrice === 0
@@ -175,12 +173,12 @@ const MyAuctions = ({
                                 {formatMoney(auction.bids.length)}
                               </TableCell>
                               <TableCell className='hidden md:table-cell'>
-                                {auction.bids.length}
+                                <>{auction.bids.length}</>
                               </TableCell>
                               <TableCell className='hidden md:table-cell'>
                                 {date.format(
                                   auction.createdAt,
-                                  "YYYY/MM/DD HH:mm:ss"
+                                  'YYYY/MM/DD HH:mm:ss'
                                 )}
                               </TableCell>
                               <TableCell className='hidden md:table-cell'>
@@ -211,20 +209,21 @@ const MyAuctions = ({
                                         navigator.clipboard.writeText(
                                           `/auction/${auction.id}`
                                         );
-                                        toast.success("Copied to clipboard");
+                                        toast.success('Copied to clipboard');
                                       }}
                                     >
                                       Copy Link
                                     </DropdownMenuItem>
-                                    {auction.status === "INACTIVE" && (
-                                      <DropdownMenuItem
-                                        onClick={() => {
-                                          server_deleteAuction(auction.id);
-                                        }}
-                                      >
-                                        Delete Auction
-                                      </DropdownMenuItem>
-                                    )}
+                                    {auction.startDate < new Date() &&
+                                      auction.endDate > new Date() && (
+                                        <DropdownMenuItem
+                                          onClick={() => {
+                                            server_deleteAuction(auction.id);
+                                          }}
+                                        >
+                                          Delete Auction
+                                        </DropdownMenuItem>
+                                      )}
                                   </DropdownMenuContent>
                                 </DropdownMenu>
                               </TableCell>
