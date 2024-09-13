@@ -19,7 +19,16 @@ import BidDialog from '../BidDialog';
 import { Button } from '../ui/button';
 
 const WS_URL = process.env.WS_URL ?? 'ws://localhost:8080';
-
+const formatMoney = (amount: number) => {
+  if (amount >= 100000 && amount < 10000000) {
+    return `${amount / 1000000}L`;
+  } else if (amount >= 10000 && amount < 100000) {
+    return `${amount / 1000}K`;
+  } else if (amount >= 10000000) {
+    return `${amount / 10000000}cr`;
+  }
+  return `${amount}`;
+};
 const Auction = ({
   user,
   auction,
@@ -84,28 +93,44 @@ const Auction = ({
           </div>
           <div className='flex flex-col gap-1'>
             <h1 className='text-2xl font-bold'>{auction.title}</h1>
-            <h2 className='text-muted-foreground'>
-              Item listed by: {auction.user.userName}
+            <h2 className='text-muted-foreground flex flex-row gap-1'>
+              Item listed by:{' '}
+              <p className='font-bold'>{auction.user.userName}</p>
             </h2>
             <p className='text-muted-foreground'>{auction.description}</p>
           </div>
         </div>
         <div className='flex flex-col gap-6'>
-          <div className='flex flex-col gap-2 p-6 rounded-lg bg-card'>
+          <div className='flex flex-col gap-2 p-1 rounded-lg bg-card'>
             <div className='flex items-center justify-between'>
               <span className='text-lg font-semibold'>Current Bid</span>
               <span className='text-2xl font-bold text-primary'>
-                ₹{currentAmount.toLocaleString()}
+                ₹{formatMoney(currentAmount).toLocaleString()}
+              </span>
+            </div>
+            <div className='flex items-center justify-between'>
+              <span className='text-lg font-semibold'>Starting Bid</span>
+              <span className='text-2xl font-bold text-primary'>
+                ₹{formatMoney(auction.startingPrice).toLocaleString()}
               </span>
             </div>
             <div className='flex items-center justify-between'>
               <span className='text-lg font-semibold'>Time Left</span>
+
               <span className='text-2xl font-bold text-primary'>
-                <AuctionTimer
-                  auctionId={auction.id}
-                  userId={userInfo?.id as string}
-                  socket={socket}
-                />
+                {auction.startDate < new Date() &&
+                auction.endDate > new Date() ? (
+                  <AuctionTimer
+                    auctionId={auction.id}
+                    userId={userInfo?.id as string}
+                    socket={socket}
+                  />
+                ) : auction.startDate < new Date() &&
+                  auction.endDate < new Date() ? (
+                  <>Yet to Start</>
+                ) : (
+                  <>Ended</>
+                )}
               </span>
             </div>
             {user?.id == auction.userId ? (
@@ -144,22 +169,28 @@ const Auction = ({
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {bids.map((bid, index) => (
-                  <TableRow key={index}>
-                    <TableCell className='font-medium'>
-                      {bid.user.userName}
-                    </TableCell>
-                    <TableCell>
-                      {date.format(
-                        new Date(bid.createdAt),
-                        'YYYY/MM/DD HH:mm:ss'
-                      )}
-                    </TableCell>
-                    <TableCell className='text-right'>
-                      ₹{bid.amount.toLocaleString()}
-                    </TableCell>
+                {bids.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={2}>No bids yet</TableCell>
                   </TableRow>
-                ))}
+                ) : (
+                  bids.map((bid, index) => (
+                    <TableRow key={index}>
+                      <TableCell className='font-medium'>
+                        {bid.user.userName}
+                      </TableCell>
+                      <TableCell>
+                        {date.format(
+                          new Date(bid.createdAt),
+                          'YYYY/MM/DD HH:mm:ss'
+                        )}
+                      </TableCell>
+                      <TableCell className='text-right'>
+                        ₹{bid.amount.toLocaleString()}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
               </TableBody>
             </Table>
           </div>

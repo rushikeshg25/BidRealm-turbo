@@ -78,12 +78,11 @@ const AuctionCardComponent = ({
             className='dark:bg-card-foreground'
             size='sm'
             onClick={() => router.push(`/auction/${auction.id}`)}
-            disabled={auction.status !== 'ACTIVE'}
           >
-            {auction.status !== 'ACTIVE'
-              ? auction.status === 'INACTIVE'
-                ? 'Yet to Start'
-                : 'Sold Out'
+            {auction.startDate < new Date() && auction.endDate > new Date()
+              ? auction.startDate > new Date() && auction.endDate > new Date()
+                ? 'View(Yet to Start)'
+                : 'View(Sold Out)'
               : 'Bid'}
           </Button>
         </div>
