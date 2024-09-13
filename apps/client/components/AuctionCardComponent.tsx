@@ -57,7 +57,7 @@ const AuctionCardComponent = ({
           </div>
         )}
       </div>
-      <div className='p-4'>
+      <div className='px-4 pt-2 pb-3'>
         <div className='flex items-center justify-between'>
           <span className='px-2 py-1 text-xs font-medium rounded-full bg-primary text-primary-foreground'>
             {auction.categories}
