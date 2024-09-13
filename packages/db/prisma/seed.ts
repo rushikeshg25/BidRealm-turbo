@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import ITEMS from './seedData';
 
 const prisma = new PrismaClient();
 
@@ -7,13 +8,29 @@ async function seed() {
     prisma.$transaction(async (tx) => {
       const user = await tx.user.create({
         data: {
-          id: 'test',
+          id: 'seeder',
           userName: 'test',
           email: 'test@test.com',
           hashedPassword: 'abcdefgh',
         },
       });
-      //add Auctions related to user
+      //add Auctions related to user and items
+      ITEMS.forEach((item) => {
+        tx.auction.create({
+          data: {
+            title: item.title,
+            description: item.description,
+            startingPrice: item.startingPrice,
+            currentPrice: item.currentPrice,
+            startDate: item.startDate,
+            endDate: item.endDate,
+            status: item.status,
+            userId: user.id,
+            image: item.image,
+            categories: item.categories,
+          },
+        });
+      });
     });
   } catch (error) {
     console.log('Error while seeding', error);
