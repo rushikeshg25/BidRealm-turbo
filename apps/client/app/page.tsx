@@ -30,7 +30,7 @@ export default async function Page({
     search,
   });
   return (
-    <div className='flex-1 grid grid-cols-1 md:grid-cols-[240px_1fr] gap-8 p-5 dark:bg-background'>
+    <div className='flex-1 grid grid-cols-1 md:grid-cols-[240px_1fr] gap-3 p-5 dark:bg-background'>
       <Filters />
       <div className='flex flex-col gap-5'>
         <Auctions auctions={auctions} />
