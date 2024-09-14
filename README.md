@@ -1,81 +1,61 @@
 # BidRealm
 
-This is an official starter Turborepo.
+BidRealm is a real-time auction platform built with modern web technologies.
 
-## Using this example
+## Architecture Overview
+<img width="871" alt="BidRealm Arch" src="https://github.com/user-attachments/assets/58554537-48f1-453a-a895-9fa07cb2c72a">
 
-Run the following command:
 
-```sh
-npx create-turbo@latest
-```
+System consists of the following components:
 
-## What's inside?
+1. **Next Client**: The front-end application built with Next.js.
+2. **Express WS Server**: A WebSocket server handling real-time communication.
+3. **Postgres DB**: The primary database for storing user data, auctions, and bids.
+4. **Message Queue**: A Redis-based queue for handling email notifications.
+5. **Email Notification Worker**: A service responsible for sending email notifications.
 
-This Turborepo includes the following packages/apps:
+## Key Features
 
-### Apps and Packages
+- Real-time bidding using WebSockets
+- Auction and bid creation
+- Email notifications for auction events (winning, outbid, auction end)
+- User authentication and session management
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+## Technologies Used
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+- Next.js for the client-side application
+- Express.js for the WebSocket server
+- PostgreSQL and PrismaORM for data persistence
+- Redis for message queue to process Emails
+- WebSockets(ws) for real-time communication
+- Lucia for Auth
+- UploadThing for Image Upload
+- NodeMailer for Emails
+- Turborepo
+- Toast Notifications(react-hot-toast), Tailwind, zod, zustand, shadcn-ui
 
-### Utilities
+## Getting Started
 
-This Turborepo has some additional tools already setup for you:
+Follow these steps to set up Bid Realm for local development:
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+1. Clone the repository:
+```git clone https://github.com/rushikeshg25/BidRealm-turbo.git```
+```cd BidRealm-turbo```
+2. Install dependencies:
+```yarn```
+3. Set up environment variables:
+- Copy the `.env.example` file in the `packages/db` directory and all app directories to `.env`.
+- Fill in the necessary environment variables in each `.env` file.
 
-### Build
+4. Set up the database:
+```yarn prisma migrate dev```
+```yarn prisma generate```
 
-To build all apps and packages, run the following command:
+5. Start the development server:
+```yarn run dev```
+The application should now be running on `http://localhost:3000` 
 
-```
-cd my-turborepo
-pnpm build
-```
+## Contributing
 
-### Develop
+We welcome contributions to Bid Realm!.Please follow the getting started guide to get started. Please leave a Star ⭐
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
