@@ -39,20 +39,28 @@ System consists of the following components:
 Follow these steps to set up Bid Realm for local development:
 
 1. Clone the repository:
-```git clone https://github.com/rushikeshg25/BidRealm-turbo.git```
-```cd BidRealm-turbo```
-2. Install dependencies:
-```yarn```
-3. Set up environment variables:
+```
+git clone https://github.com/rushikeshg25/BidRealm-turbo.git
+cd BidRealm-turbo
+```
+3. Install dependencies:
+```
+yarn
+```
+5. Set up environment variables:
 - Copy the `.env.example` file in the `packages/db` directory and all app directories to `.env`.
 - Fill in the necessary environment variables in each `.env` file.
 
 4. Set up the database:
-```yarn prisma migrate dev```
-```yarn prisma generate```
+```
+yarn prisma migrate dev
+yarn prisma generate
+```
 
-5. Start the development server:
-```yarn run dev```
+6. Start the development server:
+```
+yarn run dev
+```
 The application should now be running on `http://localhost:3000` 
 
 ## Contributing
