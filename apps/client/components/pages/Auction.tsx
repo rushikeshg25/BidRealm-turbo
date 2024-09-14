@@ -36,6 +36,10 @@ const Auction = ({
   user: User | null;
   auction: AuctionWithBidsWithUsersAndUserT;
 }) => {
+  console.log('start', auction.startDate);
+  console.log('startcal', new Date() > new Date(auction.startDate));
+  console.log('end', auction.endDate);
+  console.log('endcal', new Date() > new Date(auction.endDate));
   const [userInfo, setUserInfo] = useState<User | null | undefined>(user);
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const { initBids, bids, currentAmount, setCurrentAmount } = bidStore();
@@ -118,18 +122,18 @@ const Auction = ({
               <span className='text-lg font-semibold'>Time Left</span>
 
               <span className='text-2xl font-bold text-primary'>
-                {auction.startDate < new Date() &&
-                auction.endDate > new Date() ? (
+                {new Date(auction.startDate) < new Date() &&
+                new Date(auction.endDate) > new Date() ? (
                   <AuctionTimer
                     auctionId={auction.id}
                     userId={userInfo?.id as string}
                     socket={socket}
                   />
-                ) : auction.startDate < new Date() &&
-                  auction.endDate < new Date() ? (
-                  <>Yet to Start</>
-                ) : (
+                ) : new Date(auction.startDate) < new Date() &&
+                  new Date(auction.endDate) < new Date() ? (
                   <>Ended</>
+                ) : (
+                  <>Yet to Start</>
                 )}
               </span>
             </div>

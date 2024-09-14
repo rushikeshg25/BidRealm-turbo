@@ -62,16 +62,16 @@ const AuctionCardComponent = ({
           <span className='px-2 py-1 text-xs font-medium rounded-full bg-primary text-primary-foreground'>
             {auction.categories}
           </span>
-          <span className='px-2 py-1 text-xs font-medium rounded-full bg-secondary text-secondary-foreground'>
-            {auction.status}
-          </span>
         </div>
         <h3 className='text-lg font-semibold mt-2'>{auction.title}</h3>
         <div className='flex items-center justify-between mt-2'>
           <span className='text-base font-semibold'>
             ₹
-            {auction.status === 'ACTIVE'
-              ? formatMoney(auction.currentPrice)
+            {new Date(auction.startDate) < new Date() &&
+            new Date(auction.endDate) > new Date()
+              ? auction.currentPrice === 0
+                ? formatMoney(auction.startingPrice)
+                : formatMoney(auction.currentPrice)
               : formatMoney(auction.startingPrice)}
           </span>
           <Button
@@ -79,11 +79,13 @@ const AuctionCardComponent = ({
             size='sm'
             onClick={() => router.push(`/auction/${auction.id}`)}
           >
-            {auction.startDate < new Date() && auction.endDate > new Date()
-              ? auction.startDate > new Date() && auction.endDate > new Date()
+            {new Date(auction.startDate) < new Date() &&
+            new Date(auction.endDate) > new Date()
+              ? 'BID'
+              : new Date(auction.startDate) > new Date() &&
+                  new Date(auction.endDate) > new Date()
                 ? 'View(Yet to Start)'
-                : 'View(Sold Out)'
-              : 'Bid'}
+                : 'View(Sold Out)'}
           </Button>
         </div>
       </div>
