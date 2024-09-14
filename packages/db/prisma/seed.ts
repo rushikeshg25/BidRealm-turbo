@@ -5,31 +5,36 @@ const prisma = new PrismaClient();
 
 async function seed() {
   try {
-    prisma.$transaction(async (tx) => {
-      const user = await tx.user.create({
+    const user = await prisma.user.create({
+      data: {
+        id: 'gdgff',
+        userName: 'seeder',
+        email: 'test@test.com',
+        hashedPassword: 'abcdefgh',
+      },
+    });
+    const john = await prisma.user.create({
+      data: {
+        id: 'sadsad',
+        userName: 'john',
+        email: 'john@test.com',
+        hashedPassword: 'abcdefgh',
+      },
+    });
+    ITEMS.forEach(async (item) => {
+      await prisma.auction.create({
         data: {
-          id: 'seeder',
-          userName: 'test',
-          email: 'test@test.com',
-          hashedPassword: 'abcdefgh',
+          title: item.title,
+          description: item.description,
+          startingPrice: item.startingPrice,
+          currentPrice: item.currentPrice,
+          startDate: item.startDate,
+          endDate: item.endDate,
+          status: item.status,
+          userId: user.id,
+          image: item.image,
+          categories: item.categories,
         },
-      });
-      //add Auctions related to user and items
-      ITEMS.forEach((item) => {
-        tx.auction.create({
-          data: {
-            title: item.title,
-            description: item.description,
-            startingPrice: item.startingPrice,
-            currentPrice: item.currentPrice,
-            startDate: item.startDate,
-            endDate: item.endDate,
-            status: item.status,
-            userId: user.id,
-            image: item.image,
-            categories: item.categories,
-          },
-        });
       });
     });
   } catch (error) {
